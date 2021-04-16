@@ -4,3 +4,7 @@ repos:
     hooks:
       - id: black
         language_version: python3 # Should be a command that runs python3.6+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0
+    hooks:
+      - id: check-added-large-files
