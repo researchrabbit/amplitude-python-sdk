@@ -1,2 +1,1 @@
-
-IDENTIFY = '/identify'
+IDENTIFY = "/identify"

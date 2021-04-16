@@ -15,17 +15,17 @@ class UserProperties(BaseModel):
     def payload(self):
         output = {}
         if self.set_fields:
-            output['$set'] = self.set_fields
+            output["$set"] = self.set_fields
         if self.set_once_fields:
-            output['$setOnce'] = self.set_once_fields
+            output["$setOnce"] = self.set_once_fields
         if self.add_fields:
-            output['$add'] = self.add_fields
+            output["$add"] = self.add_fields
         if self.append_fields:
-            output['$append'] = self.append_fields
+            output["$append"] = self.append_fields
         if self.prepend_fields:
-            output['$prepend'] = self.prepend_fields
+            output["$prepend"] = self.prepend_fields
         if self.unset_fields:
-            output['$unset'] = self.unset_fields
+            output["$unset"] = self.unset_fields
         return output
 
 
@@ -43,6 +43,7 @@ class DeviceInfo(BaseModel):
     Amplitude will attempt to use device_brand, device_manufacturer, and device_model to map the corresponding
     device type."
     """
+
     platform: Optional[str] = None
     os_name: Optional[str] = None
     os_version: Optional[str] = None
@@ -60,6 +61,7 @@ class LocationInfo(BaseModel):
     Setting any of these fields will automatically reset all of the others
     if they are not also set on the same identify call."
     """
+
     country: Optional[str] = None
     region: Optional[str] = None
     city: Optional[str] = None
@@ -77,14 +79,14 @@ class Identification(DeviceInfo, LocationInfo):
     @classmethod
     @root_validator
     def check_user_id_or_device_id(cls, values):
-        uid, did = values.get('user_id'), values.get('device_id')
+        uid, did = values.get("user_id"), values.get("device_id")
         if not (uid or did):
-            raise ValueError('Must provide at least one of user_id and device_id')
+            raise ValueError("Must provide at least one of user_id and device_id")
         return values
 
     @property
     def payload(self):
-        base_dict = self.dict(exclude={'user_properties'}, exclude_none=True)
+        base_dict = self.dict(exclude={"user_properties"}, exclude_none=True)
         if self.user_properties:
-            base_dict['user_properties'] = self.user_properties.payload
+            base_dict["user_properties"] = self.user_properties.payload
         return base_dict
