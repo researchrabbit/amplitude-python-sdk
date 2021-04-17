@@ -15,4 +15,5 @@ class V2EventAPIOptions(BaseModel):  # pylint: disable=too-few-public-methods
     See <https://developers.amplitude.com/docs/http-api-v2#options> for more info.
     """
 
+    # Defaults to minimum ID length of 5
     min_id_length: Optional[PositiveInt] = None

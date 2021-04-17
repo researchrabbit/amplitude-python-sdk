@@ -9,13 +9,7 @@ import requests
 
 from . import routes
 from .models.identify import Identification
-
-
-def return_or_raise(
-    response: requests.Response,
-):  # pylint: disable=missing-function-docstring
-    response.raise_for_status()
-    return response
+from ..common.utils import return_or_raise
 
 
 class AmplitudeV1APIClient:  # pylint: disable=missing-class-docstring,too-few-public-methods
@@ -36,5 +30,5 @@ class AmplitudeV1APIClient:  # pylint: disable=missing-class-docstring,too-few-p
             "api_key": self.api_key,
             "identification": json.dumps([req.payload for req in ids]),
         }
-        resp = requests.post(data=req_data, url=identify_url, timeout=1)
+        resp = requests.post(data=req_data, url=identify_url, timeout=5)
         return return_or_raise(resp)
