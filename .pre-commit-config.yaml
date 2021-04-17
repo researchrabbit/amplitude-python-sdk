@@ -16,3 +16,9 @@ repos:
         language: system
         always_run: true
         pass_filenames: false
+      - id: create requirements
+        name: create requirements
+        entry: poetry export -o requirements.txt
+        language: system
+        always_run: true
+        pass_filenames: false
