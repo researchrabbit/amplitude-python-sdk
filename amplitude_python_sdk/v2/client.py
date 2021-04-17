@@ -20,7 +20,7 @@ class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
         self.api_key = api_key
         self.api_endpoint = api_endpoint
 
-    def send_event(
+    def send_events(
         self, events: List[EventV2], options: Optional[V2EventAPIOptions] = None
     ):  # pylint: disable=missing-function-docstring
         req_data = {
