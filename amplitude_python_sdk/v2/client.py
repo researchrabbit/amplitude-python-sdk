@@ -9,7 +9,7 @@ from .models.options import V2EventAPIOptions
 from ..common.utils import return_or_raise
 
 
-class AmplitudeV2Client:  # pylint: disable=too-few-public-methods
+class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
     """
     See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
     """
