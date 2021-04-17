@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "amplitude-python"
+name = "amplitude-python-sdk"
 version = "0.1.0"
 description = ""
 authors = ["Krishnan Chandra <krishnan.chandra@gmail.com>"]
