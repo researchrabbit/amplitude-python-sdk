@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-An Amplitude client for the various API methods.
+A client for the Amplitude HTTP API.
 The available methods and their API contracts are documented
 at <https://developers.amplitude.com/docs/>.
 """
