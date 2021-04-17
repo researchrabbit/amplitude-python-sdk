@@ -9,8 +9,8 @@ from typing import Optional, Any, Dict
 
 from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
 
-from ...v1.models.identify import DeviceInfo, LocationInfo
-from ...utils.model_validators import check_user_id_or_device_id
+from ...common.models import DeviceInfo, LocationInfo
+from ...common.utils.model_validators import check_user_id_or_device_id
 
 
 class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
