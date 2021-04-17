@@ -5,7 +5,7 @@ description = ""
 authors = ["Krishnan Chandra <krishnan.chandra@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 pydantic = "^1.8.1"
 requests = "^2.25.1"
 
