@@ -1,0 +1,36 @@
+# Build + upload Python package on tag pushes
+
+trigger:
+  tags:
+    include:
+    - v*
+
+pr: none
+
+resources:
+- repo: self
+
+variables:
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build Python package
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      displayName: Install Python
+      inputs:
+        versionSpec: 3.8
+    - script: |
+        python -m pip install -U pip
+        pip install poetry
+        poetry install
+      displayName: Install Poetry and dependencies
+    - script: |
+        poetry publish -u __token__ -p $(pypi-upload-token)
+      displayName: Publish package to PyPI
