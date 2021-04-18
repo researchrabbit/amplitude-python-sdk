@@ -1,0 +1,41 @@
+# Build + upload Python package on tag pushes
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+      - main
+
+resources:
+- repo: self
+
+variables:
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Test
+  displayName: Testing stage
+  jobs:
+  - job: Test
+    displayName: Run all tests
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      displayName: Install Python
+      inputs:
+        versionSpec: 3.8
+    - script: |
+        python -m pip install -U pip
+        pip install poetry
+        poetry install
+      displayName: Install Poetry and dependencies
+    - script: |
+        poetry run pre-commit run
+      displayName: Run pre-commit hooks to check linting and formatting
