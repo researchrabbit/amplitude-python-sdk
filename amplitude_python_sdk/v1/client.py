@@ -35,6 +35,8 @@ class AmplitudeV1APIClient:  # pylint: disable=missing-class-docstring,too-few-p
             "identification": json.dumps([req.payload for req in ids]),
         }
         try:
+            # Note - this API deliberately posts the JSON string as form data, in line with
+            # the Amplitude documentation (see link above).
             resp = requests.post(data=req_data, url=identify_url, timeout=timeout)
             return return_or_raise(resp)
         except requests.exceptions.Timeout as exc:
