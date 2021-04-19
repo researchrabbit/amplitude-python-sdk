@@ -7,10 +7,9 @@ See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 from datetime import datetime
 from typing import Optional, Any, Dict
 
-from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 from ...common.models import DeviceInfo, LocationInfo
-from ...common.utils.model_validators import check_user_id_or_device_id
 
 
 class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
@@ -66,10 +65,3 @@ class EventV2(
     user_properties: Optional[Dict[str, Any]] = None
     groups: Optional[Dict[str, Any]] = None
     app_version: Optional[str] = None
-
-    @classmethod
-    @root_validator
-    def validate_user_device_id(
-        cls, values
-    ):  # pylint: disable=missing-function-docstring
-        return check_user_id_or_device_id(values)

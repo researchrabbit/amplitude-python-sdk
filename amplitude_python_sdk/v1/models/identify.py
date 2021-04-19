@@ -2,10 +2,9 @@
 
 from typing import Optional, Dict, Any
 
-from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
-from ...common.models import DeviceInfo, LocationInfo
-from ...common.utils.model_validators import check_user_id_or_device_id
+from ...common.models import DeviceInfo, LocationInfo, EventIdentifier
 
 
 class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
@@ -68,27 +67,16 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
         return output
 
 
-class Identification(DeviceInfo, LocationInfo):
+class Identification(DeviceInfo, EventIdentifier, LocationInfo):
     """
     See <https://developers.amplitude.com/docs/identify-api#keys-for-the-identification-argument>
     for documentation.
     """
 
-    user_id: Optional[str] = None
-    device_id: Optional[str] = None
     language: Optional[str] = None
     paying: Optional[str] = None
     start_version: Optional[str] = None
     user_properties: Optional[UserProperties] = None
-
-    @classmethod
-    @root_validator
-    def validate_user_id_device_id(cls, values):
-        """
-        At least one of device_id and user_id MUST be set according to the
-        Amplitude documentation. This validator enforces that requirement.
-        """
-        return check_user_id_or_device_id(values)
 
     @property
     def payload(self) -> dict:
