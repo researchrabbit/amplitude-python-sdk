@@ -1,8 +1,10 @@
 # amplitude-python-sdk
 
-Basic SDK for the Amplitude HTTP API, providing a more user-friendly interface.
+Unofficial SDK for the Amplitude HTTP API, providing a user-friendly interface through Pydantic models.
 
 See [the Amplitude docs](https://developers.amplitude.com/docs) for more information on the various API methods and their parameters.
+
+**WARNING: This library is in very early development, and APIs are not guaranteed to be stable. Please bear that in mind when using this library.**
 
 # Installation
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "amplitude-python-sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = "Client for the Amplitude HTTP V1 and V2 API (https://developers.amplitude.com/docs)."
 authors = ["Krishnan Chandra <krishnan.chandra@gmail.com>"]
 readme = "README.md"
