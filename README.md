@@ -60,10 +60,14 @@ try:
             }
         )
     ]
-    client.send_events(
+    client.upload_events(
         events=events,
         options=V2EventAPIOptions(min_id_length=1),
     )
 except AmplitudeAPIException:
     logging.exception('Failed to log event to Amplitude')
 ```
+
+## Batch Event Upload API Example
+
+Exactly the same as the Event V2 API example, just substitute `batch_upload_events` for `upload_events`.
