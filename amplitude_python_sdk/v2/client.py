@@ -4,8 +4,10 @@ from typing import List, Optional
 
 import requests
 
+from . import routes
 from .models.event import EventV2
 from .models.options import V2EventAPIOptions
+from ..common.exceptions import AmplitudeAPIException
 from ..common.utils import return_or_raise
 
 
@@ -21,7 +23,10 @@ class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
         self.api_endpoint = api_endpoint
 
     def send_events(
-        self, events: List[EventV2], options: Optional[V2EventAPIOptions] = None
+        self,
+        events: List[EventV2],
+        options: Optional[V2EventAPIOptions] = None,
+        timeout: int = 5,
     ):  # pylint: disable=missing-function-docstring
         req_data = {
             "api_key": self.api_key,
@@ -29,7 +34,10 @@ class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
         }
         if options:
             req_data["options"] = options.dict()
-        resp = requests.post(
-            url=self.api_endpoint + "/httpapi", json=req_data, timeout=5
-        )
-        return return_or_raise(resp)
+        try:
+            resp = requests.post(
+                url=self.api_endpoint + routes.EVENT_API, json=req_data, timeout=timeout
+            )
+            return return_or_raise(resp)
+        except requests.exceptions.Timeout as exc:
+            raise AmplitudeAPIException() from exc
