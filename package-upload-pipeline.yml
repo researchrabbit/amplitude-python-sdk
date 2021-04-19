@@ -32,5 +32,5 @@ stages:
         poetry install
       displayName: Install Poetry and dependencies
     - script: |
-        poetry publish -u __token__ -p $(pypi-upload-token)
+        poetry publish -u __token__ -p $(pypi-upload-token) --build
       displayName: Publish package to PyPI
