@@ -16,3 +16,4 @@ class ChartAnnotationsV2(BaseModel):  # pylint: disable=too-few-public-methods
     label: str
     chart_id: Optional[str] = None
     details: Optional[str] = None
+
