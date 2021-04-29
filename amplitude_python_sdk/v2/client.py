@@ -5,6 +5,8 @@ from typing import List, Optional, Dict, Any
 import requests
 
 from . import routes
+
+from .models.charts import ChartAnnotationsV2
 from .models.event import EventV2
 from .models.options import V2EventAPIOptions
 from ..common.exceptions import AmplitudeAPIException
@@ -84,3 +86,69 @@ class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
         """  # pylint: disable=line-too-long
         req_data = self._construct_event_request_data(events, options)
         return self._log_events_internal(routes.BATCH_API, req_data, timeout)
+
+    def _construct_chart_request_data(
+        self, annotation: ChartAnnotationsV2
+    ) -> Dict[str, Any]:
+        """
+        Convert ChartAnnotationsV2 model to dictionary payload for _chart_annotations_post request
+        """
+
+        req_data = {
+            "api_key": self.api_key,
+            "annotation": annotation.dict(exclude_none=True),
+        }
+
+        return req_data
+
+    def _charts_annotations_post(
+        self, route: str, req_data: Dict[str, Any], timeout: int = 5,
+    ) -> requests.Response:
+        """
+        Create an annotation
+        """
+
+        try:
+            resp = requests.post(
+                url=self.api_endpoint + route, json=req_data, timeout=timeout
+            )
+
+            return return_or_raise(resp)
+        except requests.exceptions.Timeout as exc:
+            raise AmplitudeAPIException() from exc
+
+    def charts_annotations_upload_annotation(
+        self,
+        charts: ChartAnnotationsV2,
+        timeout: int = 5,
+    ) -> requests.Response:
+        """
+        Parses ChartAnnotationsV2 and calls post function
+        """  # pylint: disable=line-too-long
+        req_data = self._construct_chart_request_data(charts)
+        return self._charts_annotations_post(routes.CHART_ANNOTATIONS_API, req_data, timeout)
+
+    def _chart_annotations_get_all(
+        self, route: str, timeout: int = 5,
+    ) -> requests.Response:
+        """
+        Get all annotations
+        """
+        try:
+            resp = requests.get(url=self.api_endpoint + route, timeout=timeout)
+            return return_or_raise(resp)
+        except requests.exceptions.Timeout as exc:
+            raise AmplitudeAPIException() from exc
+
+    def _chart_annotations_get_by_id(
+        self, route: str, annotation_id: str, timeout: int = 5,
+    ) -> requests.Response:
+        """
+        Get annotation by id
+        """
+        try:
+            resp = requests.get(url=self.api_endpoint + route + "/" + annotation_id, timeout=timeout)
+            return return_or_raise(resp)
+        except requests.exceptions.Timeout as exc:
+            raise AmplitudeAPIException() from exc
+
