@@ -12,8 +12,7 @@ from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 class ChartAnnotationsV2(BaseModel):  # pylint: disable=too-few-public-methods
     app_id: int
-    date: date  # YYYY-MM-DD
+    date: date
     label: str
     chart_id: Optional[str] = None
     details: Optional[str] = None
-
