@@ -22,15 +22,15 @@ stages:
 - stage: Test
   displayName: Testing stage
   jobs:
-  - job: Test
-    displayName: Run all tests
+  - job: Validate
+    displayName: Run all pre-commit hooks (linting + tests)
     pool:
       vmImage: $(vmImageName)
     steps:
     - task: UsePythonVersion@0
       displayName: Install Python
       inputs:
-        versionSpec: 3.8
+        versionSpec: 3.9
     - script: |
         python -m pip install -U pip
         pip install poetry
