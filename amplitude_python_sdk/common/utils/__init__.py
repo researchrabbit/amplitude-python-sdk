@@ -13,6 +13,6 @@ def return_or_raise(
     try:
         response.raise_for_status()
     except requests.HTTPError as exc:
-        raise AmplitudeAPIException(response.json()) from exc
+        raise AmplitudeAPIException(response.text) from exc
 
     return response
