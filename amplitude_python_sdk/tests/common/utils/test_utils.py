@@ -3,8 +3,8 @@
 import pytest
 from requests import Response
 
-from . import return_or_raise
-from ..exceptions import AmplitudeAPIException
+from amplitude_python_sdk.common.utils import return_or_raise
+from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
 
 
 def test_return_or_raise_failed_status():
