@@ -1,4 +1,4 @@
-"""This package contains utility functions used in both V1 and V2 SDK methods."""
+"""Contains utility functions used in both V1 and V2 SDK methods."""
 
 import requests
 
