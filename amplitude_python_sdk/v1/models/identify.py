@@ -24,15 +24,18 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
     - $add (add a numeric value to a numeric property)
     - $append and $prepend (append and prepend the value to a user property array)
     - $unset (remove a property)
+
     - $preInsert: This functionality will add the specified values to the
     beginning of the list of properties for the user property if the values do
     not already exist in the list. Can give a single value or an array of values.
     If a list is sent, the order of the list will be maintained.
+
     - $postInsert: This functionality will add the specified values to the end
     of the list of properties for the user property if the values do not
     already exist in the list. Can give a single value or an array of values.
     If a list is sent, the order of the list will be maintained.
-    - $remove: this functionality will remove all instances of the values
+
+    - $remove: This functionality will remove all instances of the values
     specified from the list. Can give a single value or an array of values.
     These should be keys in the dictionary where the values are the
     corresponding properties that you want to operate on."
@@ -44,6 +47,9 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
     append_fields: Optional[Dict[str, Any]] = None
     prepend_fields: Optional[Dict[str, Any]] = None
     unset_fields: Optional[Dict[str, Any]] = None
+    pre_insert_fields: Optional[Dict[str, Any]] = None
+    post_insert_fields: Optional[Dict[str, Any]] = None
+    remove_fields: Optional[Dict[str, Any]] = None
 
     @property
     def payload(self):
@@ -64,6 +70,12 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
             output["$prepend"] = self.prepend_fields
         if self.unset_fields:
             output["$unset"] = self.unset_fields
+        if self.pre_insert_fields:
+            output["$preInsert"] = self.unset_fields
+        if self.post_insert_fields:
+            output["$postInsert"] = self.unset_fields
+        if self.remove_fields:
+            output["$remove"] = self.unset_fields
         return output
 
 
