@@ -14,9 +14,10 @@ class EventIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
     user_id: Optional[str] = None
     device_id: Optional[str] = None
 
-    @classmethod
     @root_validator
-    def validate_user_device_id(cls, values):
+    def validate_user_device_id(
+        cls, values
+    ):  # pylint: disable=no-self-argument,no-self-use
         """
         At least one of device_id and user_id MUST be set according to the
         Amplitude documentation. This validator enforces that requirement.
