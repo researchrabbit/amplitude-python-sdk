@@ -2,9 +2,7 @@
 
 import requests
 
-from ..exceptions import AmplitudeAPIException
-
-__all__ = ["return_or_raise"]
+from .exceptions import AmplitudeAPIException
 
 
 def return_or_raise(
