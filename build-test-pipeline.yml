@@ -26,11 +26,21 @@ stages:
     displayName: Run all pre-commit hooks (linting + tests)
     pool:
       vmImage: $(vmImageName)
+    strategy:
+      matrix:
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
     steps:
     - task: UsePythonVersion@0
       displayName: Install Python
       inputs:
-        versionSpec: 3.9
+        versionSpec: '$(python.version)'
     - script: |
         python -m pip install -U pip
         pip install poetry
@@ -39,3 +49,5 @@ stages:
     - script: |
         poetry run pre-commit run
       displayName: Run pre-commit hooks to check linting and formatting
+    - script: poetry run tox -e py
+      displayName: Run tests against multiple Python versions using tox
