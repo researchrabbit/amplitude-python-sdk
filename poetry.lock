@@ -140,6 +140,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "httpretty"
+version = "1.0.5"
+description = "HTTP client mock for Python"
+category = "dev"
+optional = false
+python-versions = ">=3"
+
+[[package]]
 name = "identify"
 version = "2.2.4"
 description = "File identification library for Python"
@@ -493,7 +501,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "0cefc43907e8cae06cc9807a81ad65f418412ca7d0c190ab93d07d0403e699ef"
+content-hash = "1bce19f67b3678840e5a7009af0514b247dd217651f9cd2d5d9886853d99a770"
 
 [metadata.files]
 appdirs = [
@@ -600,6 +608,9 @@ distlib = [
 filelock = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
     {file = "filelock-3.0.12.tar.gz", hash = "sha256:18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59"},
+]
+httpretty = [
+    {file = "httpretty-1.0.5.tar.gz", hash = "sha256:e53c927c4d3d781a0761727f1edfad64abef94e828718e12b672a678a8b3e0b5"},
 ]
 identify = [
     {file = "identify-2.2.4-py2.py3-none-any.whl", hash = "sha256:ad9f3fa0c2316618dc4d840f627d474ab6de106392a4f00221820200f490f5a8"},
