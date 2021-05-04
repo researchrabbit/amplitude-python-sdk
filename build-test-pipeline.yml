@@ -49,5 +49,5 @@ stages:
     - script: |
         poetry run pre-commit run
       displayName: Run pre-commit hooks to check linting and formatting
-    - script: poetry run tox
+    - script: poetry run tox -e py
       displayName: Run tests against multiple Python versions using tox
