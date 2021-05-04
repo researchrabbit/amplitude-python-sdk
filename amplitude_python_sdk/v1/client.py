@@ -8,14 +8,14 @@ import requests
 
 from . import routes
 from .models.identify import Identification, IdentificationList, IdentifyAPIRequest
-from ..common.exceptions import AmplitudeAPIException
-from ..common.utils import return_or_raise
+from ..common.utils import make_request
 
 
 class AmplitudeV1APIClient:  # pylint: disable=missing-class-docstring,too-few-public-methods
     def __init__(self, api_key, api_endpoint="https://api.amplitude.com"):
         self.api_key = api_key
         self.api_endpoint = api_endpoint
+        self.session = requests.Session()
 
     def identify(
         self, ids: List[Identification], timeout: int = 5
@@ -35,12 +35,13 @@ class AmplitudeV1APIClient:  # pylint: disable=missing-class-docstring,too-few-p
                 by_alias=True, exclude_none=True, exclude_unset=True
             ),
         )
-        try:
-            # Note - this API deliberately posts the JSON string as form data, in line with
-            # the Amplitude documentation (see link above).
-            resp = requests.post(
-                data=req_data.dict(), url=identify_url, timeout=timeout
-            )
-            return return_or_raise(resp)
-        except requests.exceptions.Timeout as exc:
-            raise AmplitudeAPIException() from exc
+
+        # Note - this API deliberately posts the JSON string as form data, in line with
+        # the Amplitude documentation (see link above).
+        return make_request(
+            self.session,
+            "POST",
+            identify_url,
+            data=req_data.dict(),
+            timeout=timeout,
+        )
