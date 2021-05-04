@@ -1,16 +1,10 @@
 """Models used to identify an individual user."""
 
-from decimal import Decimal
-from typing import Optional, Dict, List, Union
+from typing import Any, Optional, Dict, List
 
 from pydantic import BaseModel, Field, Json  # pylint: disable=no-name-in-module
 
 from ...common.models import DeviceInfo, LocationInfo, EventIdentifier
-
-NumericType = Union[int, float, Decimal]
-JSONList = List["JSONType"]
-JSONDict = Dict[str, "JSONType"]
-JSONType = Union[JSONList, JSONDict, str, NumericType, bool, None]
 
 
 class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
@@ -47,15 +41,36 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
     corresponding properties that you want to operate on."
     """
 
-    set_fields: Optional[JSONDict] = Field(alias="$set")
-    set_once_fields: Optional[JSONDict] = Field(alias="$setOnce")
-    add_fields: Optional[JSONDict] = Field(alias="$add")
-    append_fields: Optional[JSONDict] = Field(alias="$append")
-    prepend_fields: Optional[JSONDict] = Field(alias="$prepend")
-    unset_fields: Optional[JSONDict] = Field(alias="$unset")
-    pre_insert_fields: Optional[JSONDict] = Field(alias="$preInsert")
-    post_insert_fields: Optional[JSONDict] = Field(alias="$postInsert")
-    remove_fields: Optional[JSONDict] = Field(alias="$remove")
+    set_fields: Optional[Dict[str, Any]] = Field(None, json_name="$set")
+    set_once_fields: Optional[Dict[str, Any]] = Field(None, json_name="$setOnce")
+    add_fields: Optional[Dict[str, Any]] = Field(None, json_name="$add")
+    append_fields: Optional[Dict[str, Any]] = Field(None, json_name="$append")
+    prepend_fields: Optional[Dict[str, Any]] = Field(None, json_name="$prepend")
+    unset_fields: Optional[Dict[str, Any]] = Field(None, json_name="$unset")
+    pre_insert_fields: Optional[Dict[str, Any]] = Field(None, json_name="$preInsert")
+    post_insert_fields: Optional[Dict[str, Any]] = Field(None, json_name="$postInsert")
+    remove_fields: Optional[Dict[str, Any]] = Field(None, json_name="$remove")
+
+    @property
+    def payload(self):  # pylint: disable=missing-function-docstring
+        """
+        HACK: This is done to work around the lack of a dump_alias function
+        in Pydantic at the moment to change the JSON output field names.
+
+        In a future release when we can add aliases for JSON output, we
+        should be able to remove this function and set the aliases directly
+        on the field definition. Then we can just call .json() directly.
+
+        See https://github.com/samuelcolvin/pydantic/issues/624 for details.
+        """
+        output = {}
+        schema = self.schema()
+        for field_name in self.__fields_set__:
+            field_props = schema["properties"][field_name]
+            field_value = getattr(self, field_name)
+            if field_value is not None:
+                output[field_props["json_name"]] = field_value
+        return output
 
 
 class Identification(
