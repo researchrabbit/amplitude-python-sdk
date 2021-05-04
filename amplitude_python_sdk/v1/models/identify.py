@@ -1,10 +1,16 @@
 """Models used to identify an individual user."""
 
-from typing import Optional, Dict, List, Any
+from decimal import Decimal
+from typing import Optional, Dict, List, Union
 
 from pydantic import BaseModel, Field, Json  # pylint: disable=no-name-in-module
 
 from ...common.models import DeviceInfo, LocationInfo, EventIdentifier
+
+NumericType = Union[int, float, Decimal]
+JSONList = List["JSONType"]
+JSONDict = Dict[str, "JSONType"]
+JSONType = Union[JSONList, JSONDict, str, NumericType, bool, None]
 
 
 class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
@@ -41,15 +47,15 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
     corresponding properties that you want to operate on."
     """
 
-    set_fields: Optional[Dict[str, Any]] = Field(alias="$set")
-    set_once_fields: Optional[Dict[str, Any]] = Field(alias="$setOnce")
-    add_fields: Optional[Dict[str, Any]] = Field(alias="$add")
-    append_fields: Optional[Dict[str, Any]] = Field(alias="$append")
-    prepend_fields: Optional[Dict[str, Any]] = Field(alias="$prepend")
-    unset_fields: Optional[Dict[str, Any]] = Field(alias="$unset")
-    pre_insert_fields: Optional[Dict[str, Any]] = Field(alias="$preInsert")
-    post_insert_fields: Optional[Dict[str, Any]] = Field(alias="$postInsert")
-    remove_fields: Optional[Dict[str, Any]] = Field(alias="$remove")
+    set_fields: Optional[JSONDict] = Field(alias="$set")
+    set_once_fields: Optional[JSONDict] = Field(alias="$setOnce")
+    add_fields: Optional[JSONDict] = Field(alias="$add")
+    append_fields: Optional[JSONDict] = Field(alias="$append")
+    prepend_fields: Optional[JSONDict] = Field(alias="$prepend")
+    unset_fields: Optional[JSONDict] = Field(alias="$unset")
+    pre_insert_fields: Optional[JSONDict] = Field(alias="$preInsert")
+    post_insert_fields: Optional[JSONDict] = Field(alias="$postInsert")
+    remove_fields: Optional[JSONDict] = Field(alias="$remove")
 
 
 class Identification(
