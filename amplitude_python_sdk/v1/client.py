@@ -2,13 +2,12 @@
 Client implementation which can be used to call the various Amplitude API methods.
 """
 
-import json
 from typing import List
 
 import requests
 
 from . import routes
-from .models.identify import Identification
+from .models.identify import Identification, IdentificationList, IdentifyAPIRequest
 from ..common.exceptions import AmplitudeAPIException
 from ..common.utils import return_or_raise
 
@@ -30,14 +29,18 @@ class AmplitudeV1APIClient:  # pylint: disable=missing-class-docstring,too-few-p
         :return: The response from the Amplitude API.
         """
         identify_url = self.api_endpoint + routes.IDENTIFY
-        req_data = {
-            "api_key": self.api_key,
-            "identification": json.dumps([req.payload for req in ids]),
-        }
+        req_data = IdentifyAPIRequest(
+            api_key=self.api_key,
+            identification=IdentificationList(ids).json(
+                by_alias=True, exclude_none=True, exclude_unset=True
+            ),
+        )
         try:
             # Note - this API deliberately posts the JSON string as form data, in line with
             # the Amplitude documentation (see link above).
-            resp = requests.post(data=req_data, url=identify_url, timeout=timeout)
+            resp = requests.post(
+                data=req_data.dict(), url=identify_url, timeout=timeout
+            )
             return return_or_raise(resp)
         except requests.exceptions.Timeout as exc:
             raise AmplitudeAPIException() from exc
