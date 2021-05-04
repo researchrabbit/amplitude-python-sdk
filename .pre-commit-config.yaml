@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 19.10b0 # Replace by any tag/version: https://github.com/psf/black/tags
+    rev: 20.8b1 # Replace by any tag/version: https://github.com/psf/black/tags
     hooks:
       - id: black
         language_version: python3 # Should be a command that runs python3.6+
@@ -19,6 +19,12 @@ repos:
       - id: create requirements
         name: create requirements
         entry: poetry export -o requirements.txt
+        language: system
+        always_run: true
+        pass_filenames: false
+      - id: run tests
+        name: run tests
+        entry: poetry run pytest amplitude_python_sdk/tests
         language: system
         always_run: true
         pass_filenames: false
