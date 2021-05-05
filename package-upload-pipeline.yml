@@ -25,7 +25,7 @@ stages:
     - task: UsePythonVersion@0
       displayName: Install Python
       inputs:
-        versionSpec: 3.8
+        versionSpec: 3.9
     - script: |
         python -m pip install -U pip
         pip install poetry

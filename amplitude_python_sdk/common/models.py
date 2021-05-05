@@ -5,9 +5,6 @@ from typing import Optional
 from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
 
 
-__all__ = ["DeviceInfo", "EventIdentifier", "LocationInfo"]
-
-
 class EventIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
     """
     Most events in Amplitude are tied to either a user ID or a device ID
@@ -17,9 +14,10 @@ class EventIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
     user_id: Optional[str] = None
     device_id: Optional[str] = None
 
-    @classmethod
     @root_validator
-    def validate_user_device_id(cls, values):
+    def validate_user_device_id(
+        cls, values
+    ):  # pylint: disable=no-self-argument,no-self-use
         """
         At least one of device_id and user_id MUST be set according to the
         Amplitude documentation. This validator enforces that requirement.
