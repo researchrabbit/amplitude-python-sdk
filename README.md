@@ -45,7 +45,7 @@ except AmplitudeAPIException:
 import logging
 
 from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
-from amplitude_python_sdk.v2.client import AmplitudeV2APIClient
+from amplitude_python_sdk.v2.clients.http_batch_client import AmplitudeV2APIClient
 from amplitude_python_sdk.v2.models.event import EventV2
 from amplitude_python_sdk.v2.models.options import V2EventAPIOptions
 
