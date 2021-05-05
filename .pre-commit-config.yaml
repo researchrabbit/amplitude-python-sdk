@@ -22,9 +22,3 @@ repos:
         language: system
         always_run: true
         pass_filenames: false
-      - id: run tests
-        name: run tests
-        entry: poetry run pytest amplitude_python_sdk/tests
-        language: system
-        always_run: true
-        pass_filenames: false
