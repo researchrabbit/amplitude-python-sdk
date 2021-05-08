@@ -18,9 +18,7 @@ class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
     """
 
     def __init__(
-        self,
-        api_key: str,
-        api_endpoint: str = "https://api2.amplitude.com/2"
+        self, api_key: str, api_endpoint: str = "https://api2.amplitude.com/2"
     ):
         self.api_key = api_key
         self.api_endpoint = api_endpoint
