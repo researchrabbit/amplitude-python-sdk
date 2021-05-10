@@ -40,7 +40,10 @@ class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods
         return req_data
 
     def _log_events_internal(
-        self, route: str, req_data: Dict[str, Any], timeout: int = 5,
+        self,
+        route: str,
+        req_data: Dict[str, Any],
+        timeout: int = 5,
     ) -> requests.Response:
         """
         Wrapper method that implements the underlying logic for both the
