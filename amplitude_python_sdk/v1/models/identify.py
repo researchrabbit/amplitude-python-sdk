@@ -4,7 +4,7 @@ from typing import Any, Optional, Dict, List
 
 from pydantic import BaseModel, Field, Json  # pylint: disable=no-name-in-module
 
-from ...common.models import DeviceInfo, LocationInfo, EventIdentifier
+from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
 
 
 class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
@@ -74,7 +74,7 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
 
 
 class Identification(
-    DeviceInfo, EventIdentifier, LocationInfo
+    DeviceInfo, UserIdentifier, LocationInfo
 ):  # pylint: disable=too-few-public-methods
     """
     See <https://developers.amplitude.com/docs/identify-api#keys-for-the-identification-argument>

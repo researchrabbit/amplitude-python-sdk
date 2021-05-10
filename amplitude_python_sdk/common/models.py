@@ -5,7 +5,7 @@ from typing import Optional
 from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
 
 
-class EventIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
+class UserIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
     """
     Most events in Amplitude are tied to either a user ID or a device ID
     (you can provide both, but at least 1 must be present).
