@@ -52,7 +52,7 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
     remove_fields: Optional[Dict[str, Any]] = Field(None, json_name="$remove")
 
     @property
-    def payload(self):  # pylint: disable=missing-function-docstring
+    def payload(self):
         """
         HACK: This is done to work around the lack of a dump_alias function
         in Pydantic at the moment to change the JSON output field names.

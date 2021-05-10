@@ -52,7 +52,10 @@ def annotation_create_response():
 
 
 def test_create_success(
-    mocker, annotation, annotation_create_response, chart_annotations_client  # pylint: disable=redefined-outer-name
+    mocker,
+    annotation,
+    annotation_create_response,
+    chart_annotations_client,
 ):
     mock_response = requests.Response()
     mock_response.status_code = 200
@@ -68,7 +71,7 @@ def test_create_success(
     assert resp.content == annotation_create_response
 
 
-def test_create_fail(mocker, annotation, chart_annotations_client):  # pylint: disable=redefined-outer-name
+def test_create_fail(mocker, annotation, chart_annotations_client):
     mock_response = requests.Response()
     mock_response.status_code = 400
     mocker.patch(
@@ -81,7 +84,10 @@ def test_create_fail(mocker, annotation, chart_annotations_client):  # pylint: d
 
 
 def test_get_annotation_id_success(
-    mocker, annotation_id, annotation_get_response, chart_annotations_client  # pylint: disable=redefined-outer-name
+    mocker,
+    annotation_id,
+    annotation_get_response,
+    chart_annotations_client,
 ):
     mock_response = requests.Response()
     mock_response.status_code = 200
@@ -95,7 +101,7 @@ def test_get_annotation_id_success(
     assert resp.content == annotation_get_response
 
 
-def test_gt_annotation_id_fail(mocker, annotation_id, chart_annotations_client):  # pylint: disable=redefined-outer-name
+def test_gt_annotation_id_fail(mocker, annotation_id, chart_annotations_client):
     mock_response = requests.Response()
     mock_response.status_code = 400
     mocker.patch(
@@ -107,7 +113,7 @@ def test_gt_annotation_id_fail(mocker, annotation_id, chart_annotations_client):
     assert resp.status_code == 400
 
 
-def test_get_success(mocker, annotation_get_response, chart_annotations_client):  # pylint: disable=redefined-outer-name
+def test_get_success(mocker, annotation_get_response, chart_annotations_client):
     mock_response = requests.Response()
     mock_response.status_code = 200
     mock_response._content = annotation_get_response  # pylint: disable=protected-access
@@ -120,7 +126,7 @@ def test_get_success(mocker, annotation_get_response, chart_annotations_client):
     assert resp.content == annotation_get_response  # pylint: disable=protected-access
 
 
-def test_get_fail(mocker, chart_annotations_client):  # pylint: disable=redefined-outer-name
+def test_get_fail(mocker, chart_annotations_client):
     mock_response = requests.Response()
     mock_response.status_code = 400
     mocker.patch(
