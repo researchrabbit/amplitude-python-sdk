@@ -4,11 +4,12 @@ from typing import List, Optional, Dict, Any
 
 import requests
 
-from . import routes
-from .models.event import EventV2
-from .models.options import V2EventAPIOptions
-from ..common.exceptions import AmplitudeAPIException
-from ..common.utils import return_or_raise
+from amplitude_python_sdk.v2 import routes
+
+from amplitude_python_sdk.v2.models.event import EventV2
+from amplitude_python_sdk.v2.models.options import V2EventAPIOptions
+from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
+from amplitude_python_sdk.common.utils import return_or_raise
 
 
 class AmplitudeV2APIClient:  # pylint: disable=too-few-public-methods

@@ -5,9 +5,7 @@ import requests
 from .exceptions import AmplitudeAPIException
 
 
-def return_or_raise(
-    response: requests.Response,
-):  # pylint: disable=missing-function-docstring
+def return_or_raise(response: requests.Response):
     try:
         response.raise_for_status()
     except requests.HTTPError as exc:
