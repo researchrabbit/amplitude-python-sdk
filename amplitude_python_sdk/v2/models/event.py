@@ -9,7 +9,7 @@ from typing import Optional, Any, Dict
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
-from ...common.models import DeviceInfo, LocationInfo
+from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
 
 
 class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
@@ -50,7 +50,7 @@ class EventLocationData(LocationInfo):  # pylint: disable=too-few-public-methods
 
 
 class EventV2(
-    DeviceInfo, EventIdentifiers, EventLocationData
+    DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier
 ):  # pylint: disable=too-few-public-methods
     """
     See <https://developers.amplitude.com/docs/http-api-v2#keys-for-the-event-argument>
@@ -58,8 +58,6 @@ class EventV2(
     """
 
     event_type: str
-    user_id: Optional[str] = None
-    device_id: Optional[str] = None
     time: Optional[datetime] = None
     event_properties: Optional[Dict[str, Any]] = None
     user_properties: Optional[Dict[str, Any]] = None
