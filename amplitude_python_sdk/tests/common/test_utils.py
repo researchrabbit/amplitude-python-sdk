@@ -5,7 +5,11 @@ import requests
 import httpretty
 
 from amplitude_python_sdk.common.utils import make_request, return_or_raise
-from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
+
+
+@pytest.fixture
+def fake_url():
+    return "https://fake.researchrabbit"
 
 
 def test_return_or_raise_failed_status():
@@ -15,7 +19,7 @@ def test_return_or_raise_failed_status():
     response._content = (  # pylint: disable=protected-access
         b'{"error": "Failed to call Amplitude"}'
     )
-    with pytest.raises(AmplitudeAPIException):
+    with pytest.raises(requests.HTTPError):
         return_or_raise(response)
 
 
@@ -30,47 +34,45 @@ def test_return_or_raise_success():
 
 
 @httpretty.activate
-def test_make_request_timeout():
+def test_make_request_timeout(fake_url):
     def timeoutCallback(request, uri, headers):
         raise requests.Timeout("Connection timed out.")
 
     httpretty.register_uri(
         httpretty.GET,
-        "http://fake.researchrabbit",
+        fake_url,
         status=200,
         body=timeoutCallback,
     )
 
     session = requests.Session()
-    with pytest.raises(AmplitudeAPIException) as excinfo:
-        make_request(session, "GET", "http://fake.researchrabbit")
-        assert isinstance(excinfo.__cause__, requests.Timeout)
+    with pytest.raises(requests.Timeout):
+        make_request(session, "GET", fake_url)
 
 
 @httpretty.activate
-def test_make_request_failure():
+def test_make_request_failure(fake_url):
     httpretty.register_uri(
         httpretty.GET,
-        "http://fake.researchrabbit",
+        fake_url,
         status=400,
         body="failure",
     )
 
     session = requests.Session()
-    with pytest.raises(AmplitudeAPIException) as excinfo:
-        resp = make_request(session, "GET", "http://fake.researchrabbit")
-        assert isinstance(excinfo.__cause__, requests.HTTPError)
+    with pytest.raises(requests.HTTPError):
+        make_request(session, "GET", fake_url)
 
 
 @httpretty.activate
-def test_make_request_success():
+def test_make_request_success(fake_url):
     httpretty.register_uri(
         httpretty.GET,
-        "http://fake.researchrabbit",
+        fake_url,
         status=200,
         body="success",
     )
 
     session = requests.Session()
-    resp = make_request(session, "GET", "http://fake.researchrabbit")
+    resp = make_request(session, "GET", fake_url)
     assert resp.text == "success"
