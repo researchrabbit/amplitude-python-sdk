@@ -5,7 +5,7 @@ from typing import Optional
 from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
 
 
-class UserIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
+class UserIdentifier(BaseModel):
     """
     Most events in Amplitude are tied to either a user ID or a device ID
     (you can provide both, but at least 1 must be present).
@@ -28,7 +28,7 @@ class UserIdentifier(BaseModel):  # pylint: disable=too-few-public-methods
         return values
 
 
-class DeviceInfo(BaseModel):  # pylint: disable=too-few-public-methods
+class DeviceInfo(BaseModel):
     """
     See <https://developers.amplitude.com/docs/identify-api#keys-for-the-identification-argument>:
 
@@ -57,7 +57,7 @@ class DeviceInfo(BaseModel):  # pylint: disable=too-few-public-methods
     carrier: Optional[str] = None
 
 
-class LocationInfo(BaseModel):  # pylint: disable=too-few-public-methods
+class LocationInfo(BaseModel):
     """
     See <https://developers.amplitude.com/docs/identify-api#keys-for-the-identification-argument>:
 

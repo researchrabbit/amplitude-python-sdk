@@ -11,7 +11,7 @@ from amplitude_python_sdk.v2.models.options import EventAPIOptions
 from amplitude_python_sdk.common.utils import make_request
 
 
-class EventAPIClient:  # pylint: disable=too-few-public-methods
+class EventAPIClient:
     """
     See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 

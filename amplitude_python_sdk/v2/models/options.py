@@ -3,7 +3,7 @@
 from pydantic import BaseModel, PositiveInt  # pylint: disable=no-name-in-module
 
 
-class EventAPIOptions(BaseModel):  # pylint: disable=too-few-public-methods
+class EventAPIOptions(BaseModel):
     """
     Options for the Amplitude V2 Event API.
 

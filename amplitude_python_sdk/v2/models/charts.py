@@ -10,7 +10,7 @@ from typing import Optional
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 
-class ChartAnnotations(BaseModel):  # pylint: disable=too-few-public-methods
+class ChartAnnotations(BaseModel):
     """
     Chart annotation entity, used in Amplitude to denote chronological events.
     """

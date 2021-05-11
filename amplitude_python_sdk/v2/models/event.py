@@ -13,7 +13,7 @@ from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
 from .options import EventAPIOptions
 
 
-class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
+class MobileIdentifiers(BaseModel):
     """
     See <https://developers.amplitude.com/docs/http-api-v2#keys-for-the-event-argument>
     for documentation.
@@ -28,7 +28,7 @@ class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
     android_id: Optional[str] = None
 
 
-class EventIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
+class EventIdentifiers(BaseModel):
     """
     Represents a set of identifiers that can be used to uniquely identify an
     event, session, or insert attempt for idempotency.
@@ -39,7 +39,7 @@ class EventIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
     insert_id: Optional[str] = None
 
 
-class EventLocationData(LocationInfo):  # pylint: disable=too-few-public-methods
+class EventLocationData(LocationInfo):
     """
     Extends LocationInfo and adds fields representing the latitude/longitude of a
     user and their IP address.
@@ -50,9 +50,7 @@ class EventLocationData(LocationInfo):  # pylint: disable=too-few-public-methods
     ip: Optional[str] = None
 
 
-class Event(
-    DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier
-):  # pylint: disable=too-few-public-methods
+class Event(DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier):
     """
     See <https://developers.amplitude.com/docs/http-api-v2#keys-for-the-event-argument>
     for documentation.
@@ -66,7 +64,7 @@ class Event(
     app_version: Optional[str] = None
 
 
-class EventAPIRequest(BaseModel):  # pylint: disable=too-few-public-methods
+class EventAPIRequest(BaseModel):
     api_key: str
     events: List[Event]
     options: Optional[EventAPIOptions] = None

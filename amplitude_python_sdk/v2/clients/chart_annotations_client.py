@@ -9,7 +9,7 @@ from amplitude_python_sdk.v2.models.charts import ChartAnnotations
 from amplitude_python_sdk.common.utils import make_request
 
 
-class ChartAnnotationsAPIClient:  # pylint: disable=too-few-public-methods
+class ChartAnnotationsAPIClient:
     """
     See <https://developers.amplitude.com/docs/chart-annotations-api> for documentation.
     """

@@ -11,7 +11,7 @@ from .models.identify import Identification, IdentifyAPIRequest
 from ..common.utils import make_request
 
 
-class AmplitudeV1APIClient:  # pylint: disable=too-few-public-methods
+class AmplitudeV1APIClient:
     def __init__(self, api_key, api_endpoint="https://api.amplitude.com"):
         self.api_key = api_key
         self.api_endpoint = api_endpoint
