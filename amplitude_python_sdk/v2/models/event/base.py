@@ -5,12 +5,11 @@ See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
-from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
-from .options import EventAPIOptions
+from ....common.models import DeviceInfo, LocationInfo, UserIdentifier
 
 
 class MobileIdentifiers(BaseModel):
@@ -62,9 +61,3 @@ class Event(DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier):
     user_properties: Optional[Dict[str, Any]] = None
     groups: Optional[Dict[str, Any]] = None
     app_version: Optional[str] = None
-
-
-class EventAPIRequest(BaseModel):
-    api_key: str
-    events: List[Event]
-    options: Optional[EventAPIOptions] = None
