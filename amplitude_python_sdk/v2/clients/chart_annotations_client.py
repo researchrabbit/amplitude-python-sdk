@@ -44,7 +44,7 @@ class ChartAnnotationsAPIClient:
     def list(self, timeout: int = 5) -> requests.Response:
         return self._get(timeout=timeout)
 
-    def retrieve(self, annotation_id: int, timeout: int = 5) -> requests.Response:
+    def get(self, annotation_id: int, timeout: int = 5) -> requests.Response:
         return self._get(annotation_id, timeout)
 
     def _get(

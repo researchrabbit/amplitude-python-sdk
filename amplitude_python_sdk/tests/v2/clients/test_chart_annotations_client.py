@@ -83,7 +83,7 @@ def test_create_fail(mocker, annotation, chart_annotations_client):
     assert resp.status_code == 400
 
 
-def test_retrieve_annotation_success(
+def test_get_annotation_success(
     mocker,
     annotation_id: str,
     annotation_get_response: dict,
@@ -97,11 +97,11 @@ def test_retrieve_annotation_success(
         return_value=mock_response,
     )
 
-    resp = chart_annotations_client.retrieve(annotation_id)
+    resp = chart_annotations_client.get(annotation_id)
     assert resp.content == annotation_get_response
 
 
-def test_retrieve_annotation_fail(
+def test_get_annotation_fail(
     mocker, annotation_id: str, chart_annotations_client: ChartAnnotationsAPIClient
 ):
     mock_response = requests.Response()
@@ -111,7 +111,7 @@ def test_retrieve_annotation_fail(
         return_value=mock_response,
     )
 
-    resp = chart_annotations_client.retrieve(annotation_id)
+    resp = chart_annotations_client.get(annotation_id)
     assert resp.status_code == 400
 
 

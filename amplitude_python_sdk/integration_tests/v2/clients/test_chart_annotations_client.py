@@ -39,7 +39,7 @@ def test_list_chart_annotations(client: ChartAnnotationsAPIClient):
     assert resp.status_code == status_codes.OK
 
 
-def test_create_and_retrieve_chart_annotation(
+def test_create_and_get_chart_annotation(
     client: ChartAnnotationsAPIClient, test_project_id: str
 ):
     annotation = ChartAnnotation(
@@ -63,17 +63,17 @@ def test_create_and_retrieve_chart_annotation(
     assert created_annotation.get("details") == annotation.details
     assert created_annotation.get("label") == annotation.label
 
-    resp = client.retrieve(created_annotation_id)
+    resp = client.get(created_annotation_id)
     assert resp.status_code == status_codes.OK
     resp_data = resp.json()
     assert len(resp_data) == 1
     assert "annotation" in resp_data
 
-    retrieved_annotation = resp_data.get("annotation")
-    retrieved_annotation_id = retrieved_annotation.get("id")
-    assert retrieved_annotation_id is not None
-    assert type(retrieved_annotation_id) == int
-    assert retrieved_annotation_id == created_annotation_id
-    assert retrieved_annotation.get("date") == str(annotation.date)
-    assert retrieved_annotation.get("details") == annotation.details
-    assert retrieved_annotation.get("label") == annotation.label
+    getd_annotation = resp_data.get("annotation")
+    getd_annotation_id = getd_annotation.get("id")
+    assert getd_annotation_id is not None
+    assert type(getd_annotation_id) == int
+    assert getd_annotation_id == created_annotation_id
+    assert getd_annotation.get("date") == str(annotation.date)
+    assert getd_annotation.get("details") == annotation.details
+    assert getd_annotation.get("label") == annotation.label
