@@ -20,9 +20,9 @@ class ChartAnnotationsAPIClient:  # pylint: disable=too-few-public-methods
         secret_key: str,
         chart_annotations_api_endpoint: str = "https://amplitude.com/api/2",
     ):
-        self.api_key = api_key
-        self.secret_key = secret_key
         self.chart_annotations_api_endpoint = chart_annotations_api_endpoint
+        self.session = requests.Session()
+        self.session.auth = (api_key, secret_key)
 
     def create(
         self,
@@ -34,10 +34,9 @@ class ChartAnnotationsAPIClient:  # pylint: disable=too-few-public-methods
         """
 
         return make_request(
-            session=requests.Session(),
+            session=self.session,
             method="POST",
             url=self.chart_annotations_api_endpoint + routes.CHART_ANNOTATIONS_API,
-            auth=(self.api_key, self.secret_key),
             data=annotation.dict(exclude_none=True),
             timeout=timeout,
         )
@@ -58,9 +57,8 @@ class ChartAnnotationsAPIClient:  # pylint: disable=too-few-public-methods
             annotation_get_url += "/" + annotation_id
 
         return make_request(
-            session=requests.Session(),
+            session=self.session,
             method="GET",
             url=annotation_get_url,
-            auth=(self.api_key, self.secret_key),
             timeout=timeout,
         )

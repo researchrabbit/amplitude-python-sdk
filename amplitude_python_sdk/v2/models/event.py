@@ -5,11 +5,12 @@ See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 """
 
 from datetime import datetime
-from typing import Optional, Any, Dict
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
+from .options import EventAPIOptions
 
 
 class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
@@ -49,7 +50,7 @@ class EventLocationData(LocationInfo):  # pylint: disable=too-few-public-methods
     ip: Optional[str] = None
 
 
-class EventV2(
+class Event(
     DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier
 ):  # pylint: disable=too-few-public-methods
     """
@@ -63,3 +64,9 @@ class EventV2(
     user_properties: Optional[Dict[str, Any]] = None
     groups: Optional[Dict[str, Any]] = None
     app_version: Optional[str] = None
+
+
+class EventAPIRequest(BaseModel):  # pylint: disable=too-few-public-methods
+    api_key: str
+    events: List[Event]
+    options: Optional[EventAPIOptions] = None
