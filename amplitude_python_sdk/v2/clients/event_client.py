@@ -38,11 +38,12 @@ class EventAPIClient:
         for a comparison between this API and the batch API below.
         """  # pylint: disable=line-too-long
         req_data = EventAPIRequest(api_key=self.api_key, events=events, options=options)
+        json_data = req_data.json(exclude_unset=True, exclude_none=True)
         return make_request(
             self.session,
             "POST",
             url=self.api_endpoint + routes.EVENT_API,
-            json=req_data,
+            json=json_data,
             timeout=timeout,
         )
 
@@ -58,10 +59,11 @@ class EventAPIClient:
         for a comparison between this API and the HTTP V2 API above.
         """  # pylint: disable=line-too-long
         req_data = EventAPIRequest(api_key=self.api_key, events=events, options=options)
+        json_data = req_data.json(exclude_unset=True, exclude_none=True)
         return make_request(
             self.session,
             "POST",
             url=self.api_endpoint + routes.BATCH_API,
-            json=req_data,
+            json=json_data,
             timeout=timeout,
         )
