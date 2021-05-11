@@ -5,7 +5,7 @@ import requests
 
 from amplitude_python_sdk.v2 import routes
 
-from amplitude_python_sdk.v2.models.charts import ChartAnnotations
+from amplitude_python_sdk.v2.models.charts import ChartAnnotation
 from amplitude_python_sdk.common.utils import make_request
 
 
@@ -26,7 +26,7 @@ class ChartAnnotationsAPIClient:
 
     def create(
         self,
-        annotation: ChartAnnotations,
+        annotation: ChartAnnotation,
         timeout: int = 5,
     ) -> requests.Response:
         """

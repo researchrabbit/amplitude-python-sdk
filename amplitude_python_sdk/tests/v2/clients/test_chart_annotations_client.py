@@ -4,7 +4,7 @@ from datetime import date
 import pytest
 import requests
 
-from amplitude_python_sdk.v2.models.charts import ChartAnnotations
+from amplitude_python_sdk.v2.models.charts import ChartAnnotation
 
 from amplitude_python_sdk.v2.clients.chart_annotations_client import (
     ChartAnnotationsAPIClient,
@@ -18,7 +18,7 @@ def chart_annotations_client():
 
 @pytest.fixture
 def annotation():
-    return ChartAnnotations(app_id=50, date=date(2021, 5, 5), label="labels")
+    return ChartAnnotation(app_id=50, date=date(2021, 5, 5), label="labels")
 
 
 @pytest.fixture
