@@ -1,8 +1,9 @@
 """Models used to identify an individual user."""
 
+import json
 from typing import Any, Optional, Dict, List
 
-from pydantic import BaseModel, Field, Json  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
 from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
 
@@ -86,11 +87,14 @@ class Identification(
     start_version: Optional[str] = None
     user_properties: Optional[UserProperties] = None
 
-
-class IdentificationList(BaseModel):  # pylint: disable=too-few-public-methods
-    """Wrapper class representing a list of Identification objects for JSON serialization."""
-
-    __root__: List[Identification] = []
+    @property
+    def payload(self):
+        base_dict = self.dict(
+            exclude_none=True, exclude_unset=True, exclude={"user_properties"}
+        )
+        if self.user_properties:
+            base_dict["user_properties"] = self.user_properties.payload
+        return base_dict
 
 
 class IdentifyAPIRequest(BaseModel):  # pylint: disable=too-few-public-methods
@@ -99,4 +103,10 @@ class IdentifyAPIRequest(BaseModel):  # pylint: disable=too-few-public-methods
     """
 
     api_key: str
-    identification: Json
+    identification: str
+
+    @classmethod
+    def from_ids(cls, api_key: str, ids: List[Identification]):
+        return cls(
+            api_key=api_key, identification=json.dumps([id.payload for id in ids])
+        )

@@ -7,7 +7,7 @@ from typing import List
 import requests
 
 from . import routes
-from .models.identify import Identification, IdentificationList, IdentifyAPIRequest
+from .models.identify import Identification, IdentifyAPIRequest
 from ..common.utils import make_request
 
 
@@ -29,12 +29,7 @@ class AmplitudeV1APIClient:  # pylint: disable=too-few-public-methods
         :return: The response from the Amplitude API.
         """
         identify_url = self.api_endpoint + routes.IDENTIFY
-        req_data = IdentifyAPIRequest(
-            api_key=self.api_key,
-            identification=IdentificationList(ids).json(
-                by_alias=True, exclude_none=True, exclude_unset=True
-            ),
-        )
+        req_data = IdentifyAPIRequest.from_ids(self.api_key, ids)
 
         # Note - this API deliberately posts the JSON string as form data, in line with
         # the Amplitude documentation (see link above).
