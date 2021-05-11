@@ -39,21 +39,21 @@ except AmplitudeAPIException:
     logging.exception('Failed to send identify request to Amplitude')
 ```
 
-## Event V2 API Example
+## Event API Client Example
 
 ```python
 import logging
 
 from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
-from amplitude_python_sdk.v2.clients.http_batch_client import AmplitudeV2APIClient
-from amplitude_python_sdk.v2.models.event import EventV2
-from amplitude_python_sdk.v2.models.options import V2EventAPIOptions
+from amplitude_python_sdk.v2.clients.event_client import EventAPIClient
+from amplitude_python_sdk.v2.models.event import Event
+from amplitude_python_sdk.v2.models.options import EventAPIOptions
 
-client = AmplitudeV2APIClient(api_key='<YOUR API KEY HERE>')
+client = EventAPIClient(api_key='<YOUR API KEY HERE>')
 
 try:
     events = [
-        EventV2(
+        Event(
             user_id='example',
             event_type='Clicked on Foo',
             event_properties={
@@ -62,9 +62,9 @@ try:
             }
         )
     ]
-    client.upload_events(
+    client.upload(
         events=events,
-        options=V2EventAPIOptions(min_id_length=1),
+        options=EventAPIOptions(min_id_length=1),
     )
 except AmplitudeAPIException:
     logging.exception('Failed to log event to Amplitude')
@@ -72,4 +72,4 @@ except AmplitudeAPIException:
 
 ## Batch Event Upload API Example
 
-Exactly the same as the Event V2 API example, just substitute `batch_upload_events` for `upload_events`.
+Exactly the same as the Event V2 API example, just substitute `client.batch_upload` for `client.upload`.
