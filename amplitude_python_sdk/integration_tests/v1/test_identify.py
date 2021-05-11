@@ -15,7 +15,7 @@ def load_env():
 
 @pytest.fixture(scope="module")
 def test_api_key(load_env):
-    return os.environ["TEST_API_KEY"]
+    return os.environ["AMPLITUDE_TEST_API_KEY"]
 
 
 @pytest.fixture(scope="module")
