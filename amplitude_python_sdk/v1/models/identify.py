@@ -1,13 +1,14 @@
 """Models used to identify an individual user."""
 
+import json
 from typing import Any, Optional, Dict, List
 
-from pydantic import BaseModel, Field, Json  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
-from ...common.models import DeviceInfo, LocationInfo, EventIdentifier
+from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
 
 
-class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
+class UserProperties(BaseModel):
     """
     See <https://developers.amplitude.com/docs/identify-api#keys-for-the-identification-argument>
     for documentation.
@@ -73,9 +74,7 @@ class UserProperties(BaseModel):  # pylint: disable=too-few-public-methods
         return output
 
 
-class Identification(
-    DeviceInfo, EventIdentifier, LocationInfo
-):  # pylint: disable=too-few-public-methods
+class Identification(DeviceInfo, UserIdentifier, LocationInfo):
     """
     See <https://developers.amplitude.com/docs/identify-api#keys-for-the-identification-argument>
     for documentation.
@@ -86,17 +85,26 @@ class Identification(
     start_version: Optional[str] = None
     user_properties: Optional[UserProperties] = None
 
+    @property
+    def payload(self):
+        base_dict = self.dict(
+            exclude_none=True, exclude_unset=True, exclude={"user_properties"}
+        )
+        if self.user_properties:
+            base_dict["user_properties"] = self.user_properties.payload
+        return base_dict
 
-class IdentificationList(BaseModel):  # pylint: disable=too-few-public-methods
-    """Wrapper class representing a list of Identification objects for JSON serialization."""
 
-    __root__: List[Identification] = []
-
-
-class IdentifyAPIRequest(BaseModel):  # pylint: disable=too-few-public-methods
+class IdentifyAPIRequest(BaseModel):
     """
     Represents the API request made to the /identify API endpoint.
     """
 
     api_key: str
-    identification: Json
+    identification: str
+
+    @classmethod
+    def from_ids(cls, api_key: str, ids: List[Identification]):
+        return cls(
+            api_key=api_key, identification=json.dumps([id.payload for id in ids])
+        )

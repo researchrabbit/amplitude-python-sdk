@@ -5,14 +5,15 @@ See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 """
 
 from datetime import datetime
-from typing import Optional, Any, Dict
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
-from ...common.models import DeviceInfo, LocationInfo
+from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
+from .options import EventAPIOptions
 
 
-class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
+class MobileIdentifiers(BaseModel):
     """
     See <https://developers.amplitude.com/docs/http-api-v2#keys-for-the-event-argument>
     for documentation.
@@ -27,7 +28,7 @@ class MobileIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
     android_id: Optional[str] = None
 
 
-class EventIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
+class EventIdentifiers(BaseModel):
     """
     Represents a set of identifiers that can be used to uniquely identify an
     event, session, or insert attempt for idempotency.
@@ -38,7 +39,7 @@ class EventIdentifiers(BaseModel):  # pylint: disable=too-few-public-methods
     insert_id: Optional[str] = None
 
 
-class EventLocationData(LocationInfo):  # pylint: disable=too-few-public-methods
+class EventLocationData(LocationInfo):
     """
     Extends LocationInfo and adds fields representing the latitude/longitude of a
     user and their IP address.
@@ -49,19 +50,21 @@ class EventLocationData(LocationInfo):  # pylint: disable=too-few-public-methods
     ip: Optional[str] = None
 
 
-class EventV2(
-    DeviceInfo, EventIdentifiers, EventLocationData
-):  # pylint: disable=too-few-public-methods
+class Event(DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier):
     """
     See <https://developers.amplitude.com/docs/http-api-v2#keys-for-the-event-argument>
     for documentation.
     """
 
     event_type: str
-    user_id: Optional[str] = None
-    device_id: Optional[str] = None
     time: Optional[datetime] = None
     event_properties: Optional[Dict[str, Any]] = None
     user_properties: Optional[Dict[str, Any]] = None
     groups: Optional[Dict[str, Any]] = None
     app_version: Optional[str] = None
+
+
+class EventAPIRequest(BaseModel):
+    api_key: str
+    events: List[Event]
+    options: Optional[EventAPIOptions] = None
