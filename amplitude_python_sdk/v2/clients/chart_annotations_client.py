@@ -44,23 +44,26 @@ class ChartAnnotationsAPIClient:
     def list(self, timeout: int = 5) -> requests.Response:
         return self._get(timeout=timeout)
 
-    def retrieve(self, annotation_id: str, timeout: int = 5) -> requests.Response:
+    def retrieve(self, annotation_id: int, timeout: int = 5) -> requests.Response:
         return self._get(annotation_id, timeout)
 
     def _get(
         self,
-        annotation_id: Optional[str] = None,
+        annotation_id: Optional[int] = None,
         timeout: int = 5,
     ) -> requests.Response:
         """
         Get all annotations or get annotation by id if provided
         """
 
-        annotation_get_url = (
+        annotation_url_base = (
             self.chart_annotations_api_endpoint + routes.CHART_ANNOTATIONS_API
         )
-        if annotation_id:
-            annotation_get_url += "/" + annotation_id
+        annotation_get_url = (
+            f"{annotation_url_base}/{annotation_id}"
+            if annotation_id
+            else annotation_url_base
+        )
 
         return make_request(
             session=self.session,

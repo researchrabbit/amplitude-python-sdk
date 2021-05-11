@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 
 from dotenv import load_dotenv
@@ -38,12 +39,41 @@ def test_list_chart_annotations(client: ChartAnnotationsAPIClient):
     assert resp.status_code == status_codes.OK
 
 
-def test_create_chart_annotation(
+def test_create_and_retrieve_chart_annotation(
     client: ChartAnnotationsAPIClient, test_project_id: str
 ):
-    annotation = ChartAnnotation()
-    resp = client.create()
+    annotation = ChartAnnotation(
+        app_id=test_project_id,
+        date=datetime.now().date(),
+        label="test_label",
+        details="label used for integration testing",
+    )
+    resp = client.create(annotation)
+    assert resp.status_code == status_codes.OK
+    resp_data = resp.json()
+    assert len(resp_data) == 2
+    assert set(resp_data.keys()) == {"annotation", "success"}
+    assert resp_data["success"] == True
 
+    created_annotation = resp_data["annotation"]
+    created_annotation_id = created_annotation.get("id")
+    assert created_annotation_id is not None
+    assert type(created_annotation_id) == int
+    assert created_annotation.get("date") == str(annotation.date)
+    assert created_annotation.get("details") == annotation.details
+    assert created_annotation.get("label") == annotation.label
 
-def test_retrieve_chart_annotation():
-    pass
+    resp = client.retrieve(created_annotation_id)
+    assert resp.status_code == status_codes.OK
+    resp_data = resp.json()
+    assert len(resp_data) == 1
+    assert "annotation" in resp_data
+
+    retrieved_annotation = resp_data.get("annotation")
+    retrieved_annotation_id = retrieved_annotation.get("id")
+    assert retrieved_annotation_id is not None
+    assert type(retrieved_annotation_id) == int
+    assert retrieved_annotation_id == created_annotation_id
+    assert retrieved_annotation.get("date") == str(annotation.date)
+    assert retrieved_annotation.get("details") == annotation.details
+    assert retrieved_annotation.get("label") == annotation.label
