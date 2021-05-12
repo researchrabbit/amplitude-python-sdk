@@ -4,10 +4,14 @@ from typing import Optional
 import requests
 
 from ...common.clients import BasicAuthAPIClient
-from ...v2 import routes
-
-from ...v2.models.charts import ChartAnnotation
 from ...common.utils import make_request
+from ...v2 import routes
+from ...v2.models.charts import (
+    CreateChartAnnotationRequest,
+    CreateChartAnnotationResponse,
+    ListChartAnnotationsResponse,
+    GetChartAnnotationResponse,
+)
 
 
 class ChartAnnotationsAPIClient(BasicAuthAPIClient):
@@ -26,26 +30,29 @@ class ChartAnnotationsAPIClient(BasicAuthAPIClient):
 
     def create(
         self,
-        annotation: ChartAnnotation,
+        annotation: CreateChartAnnotationRequest,
         timeout: int = 5,
-    ) -> requests.Response:
+    ) -> CreateChartAnnotationResponse:
         """
         Create an annotation
         """
 
-        return make_request(
+        resp = make_request(
             session=self.session,
             method="POST",
             url=self.chart_annotations_api_endpoint + routes.CHART_ANNOTATIONS_API,
-            data=annotation.dict(exclude_none=True),
+            data=annotation.dict(exclude_none=True, exclude_unset=True),
             timeout=timeout,
         )
+        return CreateChartAnnotationResponse.parse_obj(resp.json())
 
-    def list(self, timeout: int = 5) -> requests.Response:
-        return self._get(timeout=timeout)
+    def list(self, timeout: int = 5) -> ListChartAnnotationsResponse:
+        resp = self._get(timeout=timeout)
+        return ListChartAnnotationsResponse.parse_obj(resp.json())
 
-    def get(self, annotation_id: int, timeout: int = 5) -> requests.Response:
-        return self._get(annotation_id, timeout)
+    def get(self, annotation_id: int, timeout: int = 5) -> GetChartAnnotationResponse:
+        resp = self._get(annotation_id, timeout)
+        return GetChartAnnotationResponse.parse_obj(resp.json())
 
     def _get(
         self,

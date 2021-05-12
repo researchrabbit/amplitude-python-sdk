@@ -3,9 +3,11 @@ import os
 
 from dotenv import load_dotenv
 import pytest
-from requests import codes as status_codes
 
-from amplitude_python_sdk.v2 import ChartAnnotationsAPIClient, ChartAnnotation
+from amplitude_python_sdk.v2 import (
+    ChartAnnotationsAPIClient,
+    CreateChartAnnotationRequest,
+)
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -36,44 +38,40 @@ def client(test_api_key: str, test_secret_key: str):
 
 def test_list_chart_annotations(client: ChartAnnotationsAPIClient):
     resp = client.list()
-    assert resp.status_code == status_codes.OK
+    assert resp.data is not None
+    assert len(resp.data) > 0
 
 
 def test_create_and_get_chart_annotation(
     client: ChartAnnotationsAPIClient, test_project_id: str
 ):
-    annotation = ChartAnnotation(
+    create_annotation_request = CreateChartAnnotationRequest(
         app_id=test_project_id,
         date=datetime.now().date(),
         label="test_label",
         details="label used for integration testing",
     )
-    resp = client.create(annotation)
-    assert resp.status_code == status_codes.OK
-    resp_data = resp.json()
-    assert len(resp_data) == 2
-    assert set(resp_data.keys()) == {"annotation", "success"}
-    assert resp_data["success"] == True
+    create_annotation_response = client.create(create_annotation_request)
+    assert create_annotation_response.success is True
+    assert create_annotation_response.annotation is not None
+    assert create_annotation_response.annotation.id is not None
+    assert create_annotation_response.annotation.date == create_annotation_request.date
+    assert (
+        create_annotation_response.annotation.details
+        == create_annotation_request.details
+    )
+    assert (
+        create_annotation_response.annotation.label == create_annotation_request.label
+    )
 
-    created_annotation = resp_data["annotation"]
-    created_annotation_id = created_annotation.get("id")
-    assert created_annotation_id is not None
-    assert type(created_annotation_id) == int
-    assert created_annotation.get("date") == str(annotation.date)
-    assert created_annotation.get("details") == annotation.details
-    assert created_annotation.get("label") == annotation.label
+    get_annotation_response = client.get(create_annotation_response.annotation.id)
+    assert get_annotation_response.annotation is not None
 
-    resp = client.get(created_annotation_id)
-    assert resp.status_code == status_codes.OK
-    resp_data = resp.json()
-    assert len(resp_data) == 1
-    assert "annotation" in resp_data
-
-    getd_annotation = resp_data.get("annotation")
-    getd_annotation_id = getd_annotation.get("id")
+    getd_annotation = get_annotation_response.annotation
+    getd_annotation_id = getd_annotation.id
     assert getd_annotation_id is not None
     assert type(getd_annotation_id) == int
-    assert getd_annotation_id == created_annotation_id
-    assert getd_annotation.get("date") == str(annotation.date)
-    assert getd_annotation.get("details") == annotation.details
-    assert getd_annotation.get("label") == annotation.label
+    assert getd_annotation_id == create_annotation_response.annotation.id
+    assert getd_annotation.date == create_annotation_request.date
+    assert getd_annotation.details == create_annotation_request.details
+    assert getd_annotation.label == create_annotation_request.label
