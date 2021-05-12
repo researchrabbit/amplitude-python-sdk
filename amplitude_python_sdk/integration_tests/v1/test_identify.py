@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import pytest
 from requests import codes as status_codes, HTTPError
 
-from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
 from amplitude_python_sdk.v1 import AmplitudeV1APIClient, Identification, UserProperties
 
 
@@ -67,10 +66,9 @@ def test_identify_request_success(client, idents):
     assert resp.status_code == status_codes.OK
 
 
-def test_identify_request_429(client, idents):
-    """Generate a payload large enough that it'll trigger a 429 response from Amplitude."""
+def test_identify_request_too_large(client, idents):
+    """Generate a payload large enough that it'll trigger a 413 Entity Too Large response from Amplitude."""
     request_data = idents(5000)
-    with pytest.raises(AmplitudeAPIException) as excinfo:
-        resp = client.identify(request_data)
-        assert isinstance(excinfo.__cause__, HTTPError)
-        assert excinfo.__cause__.response.status_code == status_codes.TOO_MANY_REQUESTS
+    with pytest.raises(HTTPError) as excinfo:
+        client.identify(request_data)
+        assert excinfo.response.status_code == status_codes.REQUEST_ENTITY_TOO_LARGE

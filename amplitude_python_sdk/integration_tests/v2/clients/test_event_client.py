@@ -1,11 +1,12 @@
-from datetime import datetime
 import os
+from typing import List
 
+import requests
 from dotenv import load_dotenv
 import pytest
-from requests import codes as status_codes
+from requests import codes as status_codes, HTTPError
 
-from amplitude_python_sdk.v2.models import Event, EventAPIOptions
+from amplitude_python_sdk.v2.models.event import Event, EventAPIOptions
 from amplitude_python_sdk.v2.clients import EventAPIClient
 
 
@@ -27,8 +28,12 @@ def client(test_api_key: str):
 @pytest.fixture(scope="module")
 def events():
     return [
-        Event(user_id="integration_test_user", event_type="integration_test_event")
-        for i in range(1, 5)
+        Event(
+            user_id="integration_test_user",
+            event_type="integration_test_event",
+            event_properties={"test_prop_1": "value_1", "test_prop_2": "value2"},
+        )
+        for _ in range(1, 5)
     ]
 
 
@@ -38,10 +43,15 @@ def options():
 
 
 def upload_empty_bad_request(client: EventAPIClient):
-    resp = client.upload([])
-    assert resp.status_code == status_codes.BAD_REQUEST
-    batch_resp = client.batch_upload([])
-    assert batch_resp.status_code == status_codes.BAD_REQUEST
+    with pytest.raises(HTTPError):
+        resp = client.upload([])
+        assert resp.status_code == status_codes.BAD_REQUEST
+
+
+def batch_upload_empty_bad_request(client: EventAPIClient):
+    with pytest.raises(HTTPError):
+        batch_resp = client.batch_upload([])
+        assert batch_resp.status_code == status_codes.BAD_REQUEST
 
 
 def test_upload_events_successful(client: EventAPIClient, events: List[Event]):

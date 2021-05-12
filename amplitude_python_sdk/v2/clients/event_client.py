@@ -43,7 +43,7 @@ class EventAPIClient:
         req_data = UploadRequestBody(
             api_key=self.api_key, events=events, options=options
         )
-        json_data = req_data.json(exclude_unset=True, exclude_none=True)
+        json_data = req_data.dict(exclude_unset=True, exclude_none=True)
         return make_request(
             self.session,
             "POST",
@@ -66,7 +66,7 @@ class EventAPIClient:
         req_data = UploadRequestBody(
             api_key=self.api_key, events=events, options=options
         )
-        json_data = req_data.json(exclude_unset=True, exclude_none=True)
+        json_data = req_data.dict(exclude_unset=True, exclude_none=True)
         return make_request(
             self.session,
             "POST",
