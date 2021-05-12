@@ -56,6 +56,13 @@ stages:
       inputs:
         testResultsFiles: '**/test-*.xml'
         testRunTitle: 'Publish test results for Python $(python.version)'
+    - script: poetry run pytest amplitude_python_sdk/integration_tests
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+      displayName: 'Run integration tests'
+      env:
+        AMPLITUDE_TEST_API_KEY: $(AMPLITUDE_TEST_API_KEY)
+        AMPLITUDE_TEST_SECRET_KEY: $(AMPLITUDE_TEST_SECRET_KEY)
+        AMPLITUDE_TEST_PROJECT_ID: $(AMPLITUDE_TEST_PROJECT_ID)
     - script: |
         bash <(curl -s https://codecov.io/bash)
       displayName: 'Upload to codecov.io'
