@@ -47,7 +47,7 @@ import logging
 from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
 from amplitude_python_sdk.v2.clients.event_client import EventAPIClient
 from amplitude_python_sdk.v2.models.event import Event
-from amplitude_python_sdk.v2.models.options import EventAPIOptions
+from amplitude_python_sdk.v2.models.event.options import EventAPIOptions
 
 client = EventAPIClient(api_key='<YOUR API KEY HERE>')
 

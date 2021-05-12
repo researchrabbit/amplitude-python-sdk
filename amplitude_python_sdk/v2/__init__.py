@@ -7,10 +7,10 @@ from amplitude_python_sdk.v2.clients.chart_annotations_client import (
     ChartAnnotationsAPIClient,
 )
 from .models.event import EventIdentifiers, EventLocationData, Event
-from .models.charts import ChartAnnotations
+from .models.charts import ChartAnnotation
 
 __all__ = [
-    "ChartAnnotations",
+    "ChartAnnotation",
     "ChartAnnotationsAPIClient",
     "Event",
     "EventAPIClient",

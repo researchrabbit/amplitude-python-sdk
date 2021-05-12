@@ -2,7 +2,11 @@
 
 from typing import Optional
 
-from pydantic import BaseModel, root_validator  # pylint: disable=no-name-in-module
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseModel,
+    root_validator,
+    PositiveInt,
+)
 
 
 class UserIdentifier(BaseModel):
@@ -70,3 +74,8 @@ class LocationInfo(BaseModel):
     region: Optional[str] = None
     city: Optional[str] = None
     dma: Optional[str] = None
+
+
+class BaseAPIError(BaseModel):
+    code: Optional[PositiveInt] = None
+    error: Optional[str] = None

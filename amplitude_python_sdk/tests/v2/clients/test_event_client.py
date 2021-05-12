@@ -2,8 +2,7 @@ import pytest
 import requests
 
 from amplitude_python_sdk.v2.clients.event_client import EventAPIClient
-from amplitude_python_sdk.v2.models.event import Event
-from amplitude_python_sdk.v2.models.options import EventAPIOptions
+from amplitude_python_sdk.v2.models.event import Event, EventAPIOptions
 
 
 @pytest.fixture

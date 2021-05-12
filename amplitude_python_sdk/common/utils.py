@@ -2,15 +2,9 @@
 
 import requests
 
-from .exceptions import AmplitudeAPIException
-
 
 def return_or_raise(response: requests.Response):
-    try:
-        response.raise_for_status()
-    except requests.HTTPError as exc:
-        raise AmplitudeAPIException(response.text) from exc
-
+    response.raise_for_status()
     return response
 
 
@@ -21,8 +15,5 @@ def make_request(
     Make a request using a session object, and return a wrapped exception
     if it fails for any reason.
     """
-    try:
-        resp = session.request(method, url, **kwargs)
-        return return_or_raise(resp)
-    except requests.exceptions.RequestException as exc:
-        raise AmplitudeAPIException() from exc
+    resp = session.request(method, url, **kwargs)
+    return return_or_raise(resp)
