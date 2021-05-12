@@ -3,13 +3,14 @@ from typing import Optional
 
 import requests
 
-from amplitude_python_sdk.v2 import routes
+from ...common.clients import BasicAuthAPIClient
+from ...v2 import routes
 
-from amplitude_python_sdk.v2.models.charts import ChartAnnotation
-from amplitude_python_sdk.common.utils import make_request
+from ...v2.models.charts import ChartAnnotation
+from ...common.utils import make_request
 
 
-class ChartAnnotationsAPIClient:
+class ChartAnnotationsAPIClient(BasicAuthAPIClient):
     """
     See <https://developers.amplitude.com/docs/chart-annotations-api> for documentation.
     """
@@ -20,9 +21,8 @@ class ChartAnnotationsAPIClient:
         secret_key: str,
         chart_annotations_api_endpoint: str = "https://amplitude.com/api/2",
     ):
+        super().__init__(api_key, secret_key)
         self.chart_annotations_api_endpoint = chart_annotations_api_endpoint
-        self.session = requests.Session()
-        self.session.auth = (api_key, secret_key)
 
     def create(
         self,
