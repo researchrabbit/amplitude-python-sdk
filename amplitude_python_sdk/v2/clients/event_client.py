@@ -6,8 +6,11 @@ import requests
 
 from amplitude_python_sdk.v2 import routes
 
-from amplitude_python_sdk.v2.models.event import Event, EventAPIRequest
-from amplitude_python_sdk.v2.models.options import EventAPIOptions
+from amplitude_python_sdk.v2.models.event import (
+    Event,
+    EventAPIOptions,
+    UploadRequestBody,
+)
 from amplitude_python_sdk.common.utils import make_request
 
 
@@ -37,7 +40,9 @@ class EventAPIClient:
         See <https://developers.amplitude.com/docs/batch-event-upload-api#feature-comparison-between-httpapi-2httpapi--batch>
         for a comparison between this API and the batch API below.
         """  # pylint: disable=line-too-long
-        req_data = EventAPIRequest(api_key=self.api_key, events=events, options=options)
+        req_data = UploadRequestBody(
+            api_key=self.api_key, events=events, options=options
+        )
         json_data = req_data.json(exclude_unset=True, exclude_none=True)
         return make_request(
             self.session,
@@ -58,7 +63,9 @@ class EventAPIClient:
         <https://developers.amplitude.com/docs/batch-event-upload-api#feature-comparison-between-httpapi-2httpapi--batch>
         for a comparison between this API and the HTTP V2 API above.
         """  # pylint: disable=line-too-long
-        req_data = EventAPIRequest(api_key=self.api_key, events=events, options=options)
+        req_data = UploadRequestBody(
+            api_key=self.api_key, events=events, options=options
+        )
         json_data = req_data.json(exclude_unset=True, exclude_none=True)
         return make_request(
             self.session,

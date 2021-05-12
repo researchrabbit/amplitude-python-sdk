@@ -1,8 +1,7 @@
 """Test file for the functions in the utils package."""
 
 import pytest
-import requests
-import httpretty
+from requests import codes as status_codes, HTTPError, Response, Session, Timeout
 
 from amplitude_python_sdk.common.utils import make_request, return_or_raise
 
@@ -14,18 +13,18 @@ def fake_url():
 
 def test_return_or_raise_failed_status():
     """Test a response with a failure status, and ensure that it correctly fails."""
-    response = requests.Response()
+    response = Response()
     response.status_code = 400
     response._content = (  # pylint: disable=protected-access
         b'{"error": "Failed to call Amplitude"}'
     )
-    with pytest.raises(requests.HTTPError):
+    with pytest.raises(HTTPError):
         return_or_raise(response)
 
 
 def test_return_or_raise_success():
     """Test a response with a success status, and ensure that it does not fail."""
-    response = requests.Response()
+    response = Response()
     response.status_code = 200
     response._content = (  # pylint: disable=protected-access
         b'{"error": "Failed to call Amplitude"}'
@@ -33,46 +32,22 @@ def test_return_or_raise_success():
     assert return_or_raise(response) == response
 
 
-@httpretty.activate
-def test_make_request_timeout(fake_url):
-    def timeoutCallback(request, uri, headers):
-        raise requests.Timeout("Connection timed out.")
-
-    httpretty.register_uri(
-        httpretty.GET,
-        fake_url,
-        status=200,
-        body=timeoutCallback,
-    )
-
-    session = requests.Session()
-    with pytest.raises(requests.Timeout):
+def test_make_request_timeout(requests_mock, fake_url):
+    requests_mock.get(fake_url, exc=Timeout("Connection timed out."))
+    session = Session()
+    with pytest.raises(Timeout):
         make_request(session, "GET", fake_url)
 
 
-@httpretty.activate
-def test_make_request_failure(fake_url):
-    httpretty.register_uri(
-        httpretty.GET,
-        fake_url,
-        status=400,
-        body="failure",
-    )
-
-    session = requests.Session()
-    with pytest.raises(requests.HTTPError):
+def test_make_request_failure(requests_mock, fake_url):
+    requests_mock.get(fake_url, status_code=status_codes.BAD_REQUEST, text="failure")
+    session = Session()
+    with pytest.raises(HTTPError):
         make_request(session, "GET", fake_url)
 
 
-@httpretty.activate
-def test_make_request_success(fake_url):
-    httpretty.register_uri(
-        httpretty.GET,
-        fake_url,
-        status=200,
-        body="success",
-    )
-
-    session = requests.Session()
+def test_make_request_success(requests_mock, fake_url):
+    requests_mock.get(fake_url, text="success")
+    session = Session()
     resp = make_request(session, "GET", fake_url)
     assert resp.text == "success"
