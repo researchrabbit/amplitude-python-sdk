@@ -61,3 +61,9 @@ class Event(DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier):
     user_properties: Optional[Dict[str, Any]] = None
     groups: Optional[Dict[str, Any]] = None
     app_version: Optional[str] = None
+
+    class Config:
+        json_encoders = {
+            # Amplitude requires timestamps in millis, not seconds
+            datetime: lambda v: int(v.timestamp() * 1000),
+        }
