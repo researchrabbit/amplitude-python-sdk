@@ -1,7 +1,7 @@
+from datetime import datetime
 import os
 from typing import List
 
-import requests
 from dotenv import load_dotenv
 import pytest
 from requests import codes as status_codes, HTTPError
@@ -30,6 +30,7 @@ def events():
     return [
         Event(
             user_id="integration_test_user",
+            time=datetime.now(),
             event_type="integration_test_event",
             event_properties={"test_prop_1": "value_1", "test_prop_2": "value2"},
         )
@@ -44,16 +45,15 @@ def options():
 
 def upload_empty_bad_request(client: EventAPIClient):
     with pytest.raises(HTTPError):
-        resp = client.upload([])
-        assert resp.status_code == status_codes.BAD_REQUEST
+        client.upload([])
 
 
 def batch_upload_empty_bad_request(client: EventAPIClient):
     with pytest.raises(HTTPError):
-        batch_resp = client.batch_upload([])
-        assert batch_resp.status_code == status_codes.BAD_REQUEST
+        client.batch_upload([])
 
 
 def test_upload_events_successful(client: EventAPIClient, events: List[Event]):
     resp = client.upload(events)
-    assert resp.status_code == status_codes.OK
+    assert resp.code == status_codes.OK
+    assert resp.events_ingested == len(events)

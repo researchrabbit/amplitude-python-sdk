@@ -1,5 +1,5 @@
 """API requests and responses for the event endpoint."""
-
+from datetime import datetime
 from typing import List, Optional, Dict
 
 from pydantic import (  # pylint: disable=no-name-in-module
@@ -22,6 +22,12 @@ class UploadRequestBody(BaseModel):
     api_key: str
     events: List[Event]
     options: Optional[EventAPIOptions] = None
+
+    class Config:
+        json_encoders = {
+            # Amplitude requires timestamps in millis, not seconds
+            datetime: lambda v: int(v.timestamp() * 1000),
+        }
 
 
 class SuccessSummary(BaseModel):

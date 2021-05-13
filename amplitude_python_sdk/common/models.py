@@ -1,5 +1,4 @@
 """Contains common models used in both V1 and V2 APIs."""
-
 from typing import Optional
 
 from pydantic import (  # pylint: disable=no-name-in-module
