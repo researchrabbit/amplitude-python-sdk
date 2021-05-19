@@ -10,6 +10,6 @@ def test_event_identifier_validate_user_device_id_invalid():
 
 
 def test_event_identifier_validate_user_device_id_valid():
-    ident = UserIdentifier(user_id="foo", device_id="bar")
-    ident2 = UserIdentifier(user_id="uid_only")
-    ident3 = UserIdentifier(device_id="did_only")
+    UserIdentifier(user_id="foo", device_id="bar")
+    UserIdentifier(user_id="uid_only")
+    UserIdentifier(device_id="did_only")
