@@ -23,11 +23,12 @@ class ReleasesAPIClient(BasicAuthAPIClient):
         super().__init__(api_key, secret_key)
         self.releases_api_endpoint = releases_api_endpoint
 
-    def create(self, release: Release) -> CreateReleaseResponse:
+    def create(self, release: Release, timeout: int = 5) -> CreateReleaseResponse:
         resp = make_request(
-            self.session,
-            "POST",
-            routes.RELEASES_API,
+            session=self.session,
+            method="POST",
+            url=self.releases_api_endpoint + routes.RELEASES_API,
             data=release.dict(exclude_none=True, exclude_unset=True),
+            timeout=timeout,
         )
         return CreateReleaseResponse.parse_obj(resp.json())
