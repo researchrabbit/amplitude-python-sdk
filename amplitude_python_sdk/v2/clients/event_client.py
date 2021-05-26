@@ -29,7 +29,7 @@ def wrap_exception(http_error: requests.HTTPError):
     }
     exc_constructor = exception_dict.get(resp.status_code)
     if exc_constructor:
-        return exc_constructor(resp)
+        return exc_constructor.__call__(resp)
 
     return http_error
 
