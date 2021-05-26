@@ -1,23 +1,11 @@
 from datetime import datetime
-import os
 from typing import List
 
-from dotenv import load_dotenv
 import pytest
 from requests import codes as status_codes, HTTPError
 
 from amplitude_python_sdk.v2.models.event import Event, EventAPIOptions
 from amplitude_python_sdk.v2.clients import EventAPIClient
-
-
-@pytest.fixture(scope="module", autouse=True)
-def load_env():
-    load_dotenv()
-
-
-@pytest.fixture(scope="module")
-def test_api_key(load_env):
-    return os.environ["AMPLITUDE_TEST_API_KEY"]
 
 
 @pytest.fixture(scope="module")
@@ -55,5 +43,11 @@ def batch_upload_empty_bad_request(client: EventAPIClient):
 
 def test_upload_events_successful(client: EventAPIClient, events: List[Event]):
     resp = client.upload(events)
+    assert resp.code == status_codes.OK
+    assert resp.events_ingested == len(events)
+
+
+def test_batch_upload_events_successful(client: EventAPIClient, events: List[Event]):
+    resp = client.batch_upload(events)
     assert resp.code == status_codes.OK
     assert resp.events_ingested == len(events)
