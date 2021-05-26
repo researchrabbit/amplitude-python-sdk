@@ -6,4 +6,4 @@ The available methods and their API contracts are documented
 at <https://developers.amplitude.com/docs/>.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
