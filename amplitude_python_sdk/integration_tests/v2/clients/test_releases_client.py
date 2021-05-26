@@ -14,7 +14,7 @@ def client(test_api_key: str, test_secret_key: str) -> ReleasesAPIClient:
 @pytest.fixture(scope="module")
 def release():
     return Release(
-        version="test_version",
+        version=f"test_version_{int(datetime.now().timestamp())}",
         release_start=datetime.now(),
         release_end=datetime.now() + timedelta(days=30),
         title="test release 1",

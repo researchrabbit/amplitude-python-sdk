@@ -24,6 +24,7 @@ def test_release_dict(release):
     assert d.get("release_start") == release.release_start
     assert d.get("release_end") == release.release_end
     assert d.get("title") == release.title
+    assert "created_by" not in d
     assert d.get("params") is not None
     assert type(d.get("params")) == str
 

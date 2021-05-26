@@ -42,9 +42,7 @@ class EventAPIClient:
     and the regular event endpoint.
     """
 
-    def __init__(
-        self, api_key: str, api_endpoint: str = "https://api2.amplitude.com/2"
-    ):
+    def __init__(self, api_key: str, api_endpoint: str = "https://api2.amplitude.com"):
         self.api_key = api_key
         self.api_endpoint = api_endpoint
         self.session = requests.Session()
