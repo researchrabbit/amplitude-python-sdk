@@ -1,28 +1,12 @@
 from datetime import datetime
 import os
 
-from dotenv import load_dotenv
 import pytest
 
 from amplitude_python_sdk.v2 import (
     ChartAnnotationsAPIClient,
     CreateChartAnnotationRequest,
 )
-
-
-@pytest.fixture(scope="module", autouse=True)
-def load_env():
-    load_dotenv()
-
-
-@pytest.fixture(scope="module")
-def test_api_key(load_env):
-    return os.environ["AMPLITUDE_TEST_API_KEY"]
-
-
-@pytest.fixture(scope="module")
-def test_secret_key(load_env):
-    return os.environ["AMPLITUDE_TEST_SECRET_KEY"]
 
 
 @pytest.fixture(scope="module")

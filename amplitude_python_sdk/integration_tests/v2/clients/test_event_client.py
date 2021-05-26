@@ -1,23 +1,11 @@
 from datetime import datetime
-import os
 from typing import List
 
-from dotenv import load_dotenv
 import pytest
 from requests import codes as status_codes, HTTPError
 
 from amplitude_python_sdk.v2.models.event import Event, EventAPIOptions
 from amplitude_python_sdk.v2.clients import EventAPIClient
-
-
-@pytest.fixture(scope="module", autouse=True)
-def load_env():
-    load_dotenv()
-
-
-@pytest.fixture(scope="module")
-def test_api_key(load_env):
-    return os.environ["AMPLITUDE_TEST_API_KEY"]
 
 
 @pytest.fixture(scope="module")
