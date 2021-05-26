@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import pytest
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def load_env():
     load_dotenv()
 

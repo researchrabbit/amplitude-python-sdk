@@ -13,7 +13,7 @@ def release():
         release_start=datetime.now(),
         release_end=datetime.now() + timedelta(days=30),
         title="test release 1",
-        created_by="krishnan_test_user",
+        created_by="test_user",
     )
 
 

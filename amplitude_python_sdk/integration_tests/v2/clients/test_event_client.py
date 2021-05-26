@@ -45,3 +45,9 @@ def test_upload_events_successful(client: EventAPIClient, events: List[Event]):
     resp = client.upload(events)
     assert resp.code == status_codes.OK
     assert resp.events_ingested == len(events)
+
+
+def test_batch_upload_events_successful(client: EventAPIClient, events: List[Event]):
+    resp = client.batch_upload(events)
+    assert resp.code == status_codes.OK
+    assert resp.events_ingested == len(events)
