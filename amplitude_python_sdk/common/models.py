@@ -1,7 +1,7 @@
 """Contains common models used in both V1 and V2 APIs."""
 from typing import Optional
 
-from pydantic import (  # pylint: disable=no-name-in-module
+from pydantic import (  
     BaseModel,
     root_validator,
     PositiveInt,
@@ -20,7 +20,7 @@ class UserIdentifier(BaseModel):
     @root_validator
     def validate_user_device_id(
         cls, values
-    ):  # pylint: disable=no-self-argument,no-self-use
+    ):  
         """
         At least one of device_id and user_id MUST be set according to the
         Amplitude documentation. This validator enforces that requirement.

@@ -3,7 +3,7 @@
 import json
 from typing import Any, Optional, Dict, List
 
-from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, Field  
 
 from ...common.models import DeviceInfo, LocationInfo, UserIdentifier
 
