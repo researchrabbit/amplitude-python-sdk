@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 from typing import Union, Optional, List
 
-from pydantic import BaseModel  
+from pydantic import BaseModel
 
 
 class Release(BaseModel):

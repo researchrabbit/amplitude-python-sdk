@@ -7,7 +7,7 @@ from abc import ABC
 from datetime import date as date_type
 from typing import Optional, List
 
-from pydantic import BaseModel  
+from pydantic import BaseModel
 
 
 class ChartAnnotationBase(BaseModel, ABC):

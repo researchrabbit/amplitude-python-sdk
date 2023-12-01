@@ -1,6 +1,6 @@
 """Contains option classes for any of the Amplitude API methods."""
 
-from pydantic import BaseModel, PositiveInt  
+from pydantic import BaseModel, PositiveInt
 
 
 class EventAPIOptions(BaseModel):

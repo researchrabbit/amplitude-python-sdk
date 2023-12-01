@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import List, Optional, Dict
 
-from pydantic import (  
+from pydantic import (
     BaseModel,
     NonNegativeInt,
     PositiveInt,
