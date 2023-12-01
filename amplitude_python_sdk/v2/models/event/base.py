@@ -7,7 +7,7 @@ See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 
 from ....common.models import DeviceInfo, LocationInfo, UserIdentifier
 
@@ -62,8 +62,12 @@ class Event(DeviceInfo, EventIdentifiers, EventLocationData, UserIdentifier):
     groups: Optional[Dict[str, Any]] = None
     app_version: Optional[str] = None
 
-    class Config:
-        json_encoders = {
-            # Amplitude requires timestamps in millis, not seconds
-            datetime: lambda v: int(v.timestamp() * 1000),
-        }
+    @field_serializer("time")
+    def timestamp_in_millis(v: Optional[datetime]) -> Optional[int]:
+        """
+        Amplitude requires timestamps in millis, not seconds
+        """
+        if v is None:
+            return None
+
+        return int(v.timestamp() * 1000)
