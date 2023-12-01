@@ -7,7 +7,7 @@ See <https://developers.amplitude.com/docs/http-api-v2> for documentation.
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel
 
 from ....common.models import DeviceInfo, LocationInfo, UserIdentifier
 

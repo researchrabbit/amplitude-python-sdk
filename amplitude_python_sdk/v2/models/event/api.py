@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import List, Optional, Dict
 
-from pydantic import (  # pylint: disable=no-name-in-module
+from pydantic import (
     BaseModel,
     NonNegativeInt,
     PositiveInt,

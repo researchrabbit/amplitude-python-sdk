@@ -6,7 +6,7 @@ from amplitude_python_sdk.common.models import UserIdentifier
 
 def test_event_identifier_validate_user_device_id_invalid():
     with pytest.raises(ValidationError):
-        ident = UserIdentifier()
+        UserIdentifier()
 
 
 def test_event_identifier_validate_user_device_id_valid():

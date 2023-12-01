@@ -6,7 +6,7 @@ from amplitude_python_sdk.v1 import AmplitudeV1APIClient, Identification, UserPr
 def test_identify_request(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 200
-    mock_response._content = {}  # pylint: disable=protected-access
+    mock_response._content = {}
     mocker.patch(
         "amplitude_python_sdk.v1.client.make_request",
         return_value=mock_response,

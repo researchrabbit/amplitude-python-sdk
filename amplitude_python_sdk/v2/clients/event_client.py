@@ -23,9 +23,9 @@ from amplitude_python_sdk.common.utils import make_request
 def wrap_exception(http_error: requests.HTTPError):
     resp = http_error.response
     exception_dict = {
-        requests.codes.BAD_REQUEST: InvalidRequestException.from_response,  # pylint: disable=no-member,
-        requests.codes.REQUEST_ENTITY_TOO_LARGE: PayloadTooLargeException.from_response,  # pylint: disable=no-member
-        requests.codes.TOO_MANY: TooManyRequestsForDeviceException.from_response,  # pylint: disable=no-member
+        requests.codes.BAD_REQUEST: InvalidRequestException.from_response,
+        requests.codes.REQUEST_ENTITY_TOO_LARGE: PayloadTooLargeException.from_response,
+        requests.codes.TOO_MANY: TooManyRequestsForDeviceException.from_response,
     }
     exc_constructor = exception_dict.get(resp.status_code)
     if exc_constructor:
@@ -69,7 +69,7 @@ class EventAPIClient:
             )
             return SuccessSummary.parse_obj(resp.json())
         except requests.HTTPError as exc:
-            raise wrap_exception(exc)  # pylint: disable=raise-missing-from
+            raise wrap_exception(exc)
 
     def upload(
         self,
@@ -94,5 +94,5 @@ class EventAPIClient:
         Uploads events to Amplitude using the Batch Event Upload API. See
         <https://developers.amplitude.com/docs/batch-event-upload-api#feature-comparison-between-httpapi-2httpapi--batch>
         for a comparison between this API and the HTTP V2 API above.
-        """  # pylint: disable=line-too-long
+        """
         return self._execute_upload(routes.BATCH_API, events, options, timeout)

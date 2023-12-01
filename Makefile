@@ -1,10 +1,13 @@
-.PHONY: fmt lint test integration-test
+.PHONY: fmt fix lint test integration-test
 
 fmt:
-	poetry run black .
+	poetry run ruff format .
 
 lint:
-	poetry run pylint amplitude_python_sdk
+	poetry run ruff check .
+
+fix:
+	poetry run ruff check . --fix
 
 test:
 	poetry run pytest amplitude_python_sdk/tests --cov=amplitude_python_sdk
