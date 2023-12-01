@@ -44,15 +44,15 @@ class ChartAnnotationsAPIClient(BasicAuthAPIClient):
             data=annotation.model_dump(exclude_none=True, exclude_unset=True),
             timeout=timeout,
         )
-        return CreateChartAnnotationResponse.parse_obj(resp.json())
+        return CreateChartAnnotationResponse.model_validate_json(resp.content)
 
     def list(self, timeout: int = 5) -> ListChartAnnotationsResponse:
         resp = self._get(timeout=timeout)
-        return ListChartAnnotationsResponse.parse_obj(resp.json())
+        return ListChartAnnotationsResponse.model_validate_json(resp.content)
 
     def get(self, annotation_id: int, timeout: int = 5) -> GetChartAnnotationResponse:
         resp = self._get(annotation_id, timeout)
-        return GetChartAnnotationResponse.parse_obj(resp.json())
+        return GetChartAnnotationResponse.model_validate_json(resp.content)
 
     def _get(
         self,

@@ -67,7 +67,7 @@ class EventAPIClient:
                 headers={"Content-Type": "application/json"},
                 timeout=timeout,
             )
-            return SuccessSummary.parse_obj(resp.json())
+            return SuccessSummary.model_validate_json(resp.content)
         except requests.HTTPError as exc:
             raise wrap_exception(exc)
 
