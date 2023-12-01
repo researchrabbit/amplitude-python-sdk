@@ -26,9 +26,9 @@ def test_release_dict(release):
     assert d.get("title") == release.title
     assert "created_by" not in d
     assert d.get("params") is not None
-    assert type(d.get("params")) == str
+    assert isinstance(d.get("params"), str)
 
     params_dict = json.loads(d.get("params"))
-    assert type(params_dict) == dict
+    assert isinstance(params_dict, dict)
     assert len(params_dict) == 1
     assert params_dict.get("created_by") == release.created_by

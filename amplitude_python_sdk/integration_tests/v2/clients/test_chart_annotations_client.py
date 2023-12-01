@@ -54,7 +54,7 @@ def test_create_and_get_chart_annotation(
     getd_annotation = get_annotation_response.annotation
     getd_annotation_id = getd_annotation.id
     assert getd_annotation_id is not None
-    assert type(getd_annotation_id) == int
+    assert isinstance(getd_annotation_id, int)
     assert getd_annotation_id == create_annotation_response.annotation.id
     assert getd_annotation.date == create_annotation_request.date
     assert getd_annotation.details == create_annotation_request.details

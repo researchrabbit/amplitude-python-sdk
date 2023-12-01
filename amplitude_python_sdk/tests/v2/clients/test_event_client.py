@@ -4,8 +4,6 @@ from typing import List
 import pytest
 from requests import codes as status_codes, HTTPError
 
-from amplitude_python_sdk.common.exceptions import AmplitudeAPIException
-from amplitude_python_sdk.common.models import BaseAPIError
 from amplitude_python_sdk.v2 import routes
 from amplitude_python_sdk.v2.clients.event_client import EventAPIClient
 from amplitude_python_sdk.v2.exceptions.event import (
