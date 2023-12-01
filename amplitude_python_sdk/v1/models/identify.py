@@ -87,7 +87,7 @@ class Identification(DeviceInfo, UserIdentifier, LocationInfo):
 
     @property
     def payload(self):
-        base_dict = self.dict(
+        base_dict = self.model_dump(
             exclude_none=True, exclude_unset=True, exclude={"user_properties"}
         )
         if self.user_properties:

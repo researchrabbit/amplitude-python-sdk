@@ -28,7 +28,7 @@ class ReleasesAPIClient(BasicAuthAPIClient):
             session=self.session,
             method="POST",
             url=self.releases_api_endpoint + routes.RELEASES_API,
-            data=release.dict(exclude_none=True, exclude_unset=True),
+            data=release.model_dump(exclude_none=True, exclude_unset=True),
             timeout=timeout,
         )
         return CreateReleaseResponse.parse_obj(resp.json())
