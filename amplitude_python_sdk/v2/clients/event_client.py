@@ -57,7 +57,7 @@ class EventAPIClient:
         req_data = UploadRequestBody(
             api_key=self.api_key, events=events, options=options
         )
-        json_data = req_data.json(exclude_unset=True, exclude_none=True)
+        json_data = req_data.model_dump_json(exclude_unset=True, exclude_none=True)
         try:
             resp = make_request(
                 self.session,

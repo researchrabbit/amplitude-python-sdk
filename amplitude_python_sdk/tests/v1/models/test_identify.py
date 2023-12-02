@@ -13,7 +13,7 @@ def test_user_properties_serialization():
     up = UserProperties(
         set_fields=set_fields, prepend_fields=prepend_fields, unset_fields=None
     )
-    assert len(up.__fields_set__) == 3
+    assert len(up.model_fields_set) == 3
     payload = up.payload
     assert len(payload) == 2
     assert set(payload.keys()) == {"$set", "$prepend"}
@@ -35,12 +35,12 @@ def test_identification_user_properties_payload():
     up = UserProperties(
         set_fields=set_fields, prepend_fields=prepend_fields, unset_fields=None
     )
-    assert len(up.__fields_set__) == 3
+    assert len(up.model_fields_set) == 3
 
     i = Identification(
         user_id="user_id_example", language="en", paying="False", user_properties=up
     )
-    assert len(i.__fields_set__) == 4
+    assert len(i.model_fields_set) == 4
 
     payload = i.payload
     assert len(payload) == 4
@@ -59,7 +59,7 @@ def test_identify_api_request_from_ids():
     up = UserProperties(
         set_fields=set_fields, prepend_fields=prepend_fields, unset_fields=None
     )
-    assert len(up.__fields_set__) == 3
+    assert len(up.model_fields_set) == 3
 
     ids = [
         Identification(
