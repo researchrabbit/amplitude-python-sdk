@@ -18,7 +18,7 @@ def test_identify_request(mocker):
     up = UserProperties(
         set_fields=set_fields, prepend_fields=prepend_fields, unset_fields=None
     )
-    assert len(up.__fields_set__) == 3
+    assert len(up.model_fields_set) == 3
 
     ids = [
         Identification(
