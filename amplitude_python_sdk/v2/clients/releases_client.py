@@ -31,4 +31,4 @@ class ReleasesAPIClient(BasicAuthAPIClient):
             data=release.model_dump(exclude_none=True, exclude_unset=True),
             timeout=timeout,
         )
-        return CreateReleaseResponse.model_validate_json(resp.content)
+        return CreateReleaseResponse.model_validate(resp.json())

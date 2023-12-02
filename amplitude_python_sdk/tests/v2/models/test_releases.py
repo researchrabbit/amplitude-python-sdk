@@ -21,8 +21,8 @@ def test_release_model_dump(release: Release):
     d = release.model_dump(exclude_none=True, exclude_unset=True)
     assert len(d) == 6
     assert d.get("version") == release.version
-    assert d.get("release_start") == release.release_start
-    assert d.get("release_end") == release.release_end
+    assert d.get("release_start") == release.format_datetime(release.release_start)
+    assert d.get("release_end") == release.format_datetime(release.release_end)
     assert d.get("title") == release.title
     assert d.get("chart_visibility") == release.chart_visibility
     assert "created_by" not in d

@@ -34,8 +34,8 @@ class Release(BaseModel):
         """
         base_dict = {
             "version": self.version,
-            "release_start": self.release_start,
-            "release_end": self.release_end,
+            "release_start": self.format_datetime(self.release_start),
+            "release_end": self.format_datetime(self.release_end),
             "title": self.title,
             "description": self.description,
             "platforms": self.platforms,
@@ -51,7 +51,7 @@ class Release(BaseModel):
         return {k: v for k, v in base_dict.items() if v is not None}
 
     @field_serializer("release_start", "release_end")
-    def format_datetime(v: Optional[datetime]) -> Optional[str]:
+    def format_datetime(self, v: Optional[datetime]) -> Optional[str]:
         """
         The Releases API requires the dates to be passed in exactly this string format.
         """
