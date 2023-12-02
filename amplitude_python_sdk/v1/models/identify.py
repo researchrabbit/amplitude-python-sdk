@@ -42,36 +42,27 @@ class UserProperties(BaseModel):
     corresponding properties that you want to operate on."
     """
 
-    set_fields: Optional[Dict[str, Any]] = Field(None, json_name="$set")
-    set_once_fields: Optional[Dict[str, Any]] = Field(None, json_name="$setOnce")
-    add_fields: Optional[Dict[str, Any]] = Field(None, json_name="$add")
-    append_fields: Optional[Dict[str, Any]] = Field(None, json_name="$append")
-    prepend_fields: Optional[Dict[str, Any]] = Field(None, json_name="$prepend")
-    unset_fields: Optional[Dict[str, Any]] = Field(None, json_name="$unset")
-    pre_insert_fields: Optional[Dict[str, Any]] = Field(None, json_name="$preInsert")
-    post_insert_fields: Optional[Dict[str, Any]] = Field(None, json_name="$postInsert")
-    remove_fields: Optional[Dict[str, Any]] = Field(None, json_name="$remove")
+    set_fields: Optional[Dict[str, Any]] = Field(None, serialization_alias="$set")
+    set_once_fields: Optional[Dict[str, Any]] = Field(
+        None, serialization_alias="$setOnce"
+    )
+    add_fields: Optional[Dict[str, Any]] = Field(None, serialization_alias="$add")
+    append_fields: Optional[Dict[str, Any]] = Field(None, serialization_alias="$append")
+    prepend_fields: Optional[Dict[str, Any]] = Field(
+        None, serialization_alias="$prepend"
+    )
+    unset_fields: Optional[Dict[str, Any]] = Field(None, serialization_alias="$unset")
+    pre_insert_fields: Optional[Dict[str, Any]] = Field(
+        None, serialization_alias="$preInsert"
+    )
+    post_insert_fields: Optional[Dict[str, Any]] = Field(
+        None, serialization_alias="$postInsert"
+    )
+    remove_fields: Optional[Dict[str, Any]] = Field(None, serialization_alias="$remove")
 
     @property
-    def payload(self):
-        """
-        HACK: This is done to work around the lack of a dump_alias function
-        in Pydantic at the moment to change the JSON output field names.
-
-        In a future release when we can add aliases for JSON output, we
-        should be able to remove this function and set the aliases directly
-        on the field definition. Then we can just call .json() directly.
-
-        See https://github.com/samuelcolvin/pydantic/issues/624 for details.
-        """
-        output = {}
-        schema = self.schema()
-        for field_name in self.__fields_set__:
-            field_props = schema["properties"][field_name]
-            field_value = getattr(self, field_name)
-            if field_value is not None:
-                output[field_props["json_name"]] = field_value
-        return output
+    def payload(self) -> Dict[str, Any]:
+        return self.model_dump(by_alias=True, exclude_none=True, exclude_unset=True)
 
 
 class Identification(DeviceInfo, UserIdentifier, LocationInfo):
