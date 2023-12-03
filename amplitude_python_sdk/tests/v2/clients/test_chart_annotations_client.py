@@ -73,7 +73,7 @@ def test_create_success(
     requests_mock.post(
         chart_annotations_client.chart_annotations_api_endpoint
         + routes.CHART_ANNOTATIONS_API,
-        text=create_annotation_response.json(),
+        text=create_annotation_response.model_dump_json(),
     )
 
     response = chart_annotations_client.create(create_annotation_request)
@@ -105,7 +105,7 @@ def test_get_annotation_success(
         chart_annotations_client.chart_annotations_api_endpoint
         + routes.CHART_ANNOTATIONS_API
         + f"/{annotation_id}",
-        text=get_annotation_response.json(),
+        text=get_annotation_response.model_dump_json(),
     )
 
     resp = chart_annotations_client.get(annotation_id)
@@ -136,7 +136,7 @@ def test_list_annotations_success(
     requests_mock.get(
         chart_annotations_client.chart_annotations_api_endpoint
         + routes.CHART_ANNOTATIONS_API,
-        text=list_annotation_response.json(),
+        text=list_annotation_response.model_dump_json(),
     )
 
     resp = chart_annotations_client.list()

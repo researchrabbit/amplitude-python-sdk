@@ -37,6 +37,6 @@ class AmplitudeV1APIClient:
             self.session,
             "POST",
             identify_url,
-            data=req_data.dict(),
+            data=req_data.model_dump(),
             timeout=timeout,
         )

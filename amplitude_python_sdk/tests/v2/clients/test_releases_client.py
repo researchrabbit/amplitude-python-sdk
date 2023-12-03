@@ -35,8 +35,8 @@ def releases_client() -> ReleasesAPIClient:
 def release_response() -> ReleaseResponse:
     return ReleaseResponse(
         version="x.y.z",
-        release_start=datetime.now(),
-        release_end=datetime.now() + timedelta(days=30),
+        release_start=datetime.now().replace(microsecond=0),
+        release_end=(datetime.now() + timedelta(days=30)).replace(microsecond=0),
         title="test release",
         type="integration",
         org_id=21,
@@ -59,7 +59,7 @@ def test_create_success(
 ):
     requests_mock.post(
         releases_client.releases_api_endpoint + routes.RELEASES_API,
-        text=create_release_response.json(),
+        json=create_release_response.model_dump(),
     )
 
     response = releases_client.create(release)

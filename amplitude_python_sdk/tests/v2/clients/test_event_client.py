@@ -22,12 +22,12 @@ from amplitude_python_sdk.v2.models.event import (
 
 
 @pytest.fixture
-def event_client():
+def event_client() -> EventAPIClient:
     return EventAPIClient(api_key="fake")
 
 
 @pytest.fixture
-def events():
+def events() -> List[Event]:
     return [
         Event(
             user_id=f"test_user_{i}",
@@ -39,12 +39,12 @@ def events():
 
 
 @pytest.fixture
-def options():
+def options() -> EventAPIOptions:
     return EventAPIOptions(min_id_length=5)
 
 
 @pytest.fixture
-def upload_success_response(events):
+def upload_success_response(events: List[Event]) -> SuccessSummary:
     return SuccessSummary(
         code=status_codes.OK,
         events_ingested=len(events),
@@ -54,21 +54,21 @@ def upload_success_response(events):
 
 
 @pytest.fixture
-def invalid_request_error():
+def invalid_request_error() -> InvalidRequestError:
     return InvalidRequestError(
         code=status_codes.BAD_REQUEST, error="invalid payload", missing_field="time"
     )
 
 
 @pytest.fixture
-def payload_too_large_error():
+def payload_too_large_error() -> PayloadTooLargeError:
     return PayloadTooLargeError(
         code=status_codes.REQUEST_ENTITY_TOO_LARGE, error="too many events"
     )
 
 
 @pytest.fixture
-def too_many_requests_for_device_error():
+def too_many_requests_for_device_error() -> TooManyRequestsForDeviceError:
     return TooManyRequestsForDeviceError(
         code=status_codes.TOO_MANY,
         error="Too many requests for device",
@@ -76,37 +76,51 @@ def too_many_requests_for_device_error():
     )
 
 
-def test_upload(requests_mock, event_client, events, options, upload_success_response):
+def test_upload(
+    requests_mock,
+    event_client: EventAPIClient,
+    events: List[Event],
+    options: EventAPIOptions,
+    upload_success_response: SuccessSummary,
+):
     requests_mock.post(
         event_client.api_endpoint + routes.EVENT_API,
-        text=upload_success_response.json(),
+        text=upload_success_response.model_dump_json(),
     )
     resp = event_client.upload(events, options)
     assert resp == upload_success_response
 
 
 def test_batch_upload(
-    requests_mock, event_client, events, options, upload_success_response
+    requests_mock,
+    event_client: EventAPIClient,
+    events: List[Event],
+    options: EventAPIOptions,
+    upload_success_response: SuccessSummary,
 ):
     requests_mock.post(
         event_client.api_endpoint + routes.BATCH_API,
-        text=upload_success_response.json(),
+        text=upload_success_response.model_dump_json(),
     )
     resp = event_client.batch_upload(events, options)
     assert resp == upload_success_response
 
 
 def test_invalid_request(
-    requests_mock, event_client, events, options, invalid_request_error
+    requests_mock,
+    event_client: EventAPIClient,
+    events: List[Event],
+    options: EventAPIOptions,
+    invalid_request_error: InvalidRequestError,
 ):
     requests_mock.post(
         event_client.api_endpoint + routes.BATCH_API,
-        text=invalid_request_error.json(),
+        text=invalid_request_error.model_dump_json(),
         status_code=status_codes.BAD_REQUEST,
     )
     requests_mock.post(
         event_client.api_endpoint + routes.EVENT_API,
-        text=invalid_request_error.json(),
+        text=invalid_request_error.model_dump_json(),
         status_code=status_codes.BAD_REQUEST,
     )
     with pytest.raises(InvalidRequestException) as exc:
@@ -126,12 +140,12 @@ def test_payload_too_large(
 ):
     requests_mock.post(
         event_client.api_endpoint + routes.BATCH_API,
-        text=payload_too_large_error.json(),
+        text=payload_too_large_error.model_dump_json(),
         status_code=status_codes.REQUEST_ENTITY_TOO_LARGE,
     )
     requests_mock.post(
         event_client.api_endpoint + routes.EVENT_API,
-        text=payload_too_large_error.json(),
+        text=payload_too_large_error.model_dump_json(),
         status_code=status_codes.REQUEST_ENTITY_TOO_LARGE,
     )
     with pytest.raises(PayloadTooLargeException) as exc:
@@ -151,12 +165,12 @@ def test_too_many_requests(
 ):
     requests_mock.post(
         event_client.api_endpoint + routes.BATCH_API,
-        text=too_many_requests_for_device_error.json(),
+        text=too_many_requests_for_device_error.model_dump_json(),
         status_code=status_codes.TOO_MANY,
     )
     requests_mock.post(
         event_client.api_endpoint + routes.EVENT_API,
-        text=too_many_requests_for_device_error.json(),
+        text=too_many_requests_for_device_error.model_dump_json(),
         status_code=status_codes.TOO_MANY,
     )
     with pytest.raises(TooManyRequestsForDeviceException) as exc:

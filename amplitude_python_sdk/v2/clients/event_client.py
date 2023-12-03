@@ -57,7 +57,7 @@ class EventAPIClient:
         req_data = UploadRequestBody(
             api_key=self.api_key, events=events, options=options
         )
-        json_data = req_data.json(exclude_unset=True, exclude_none=True)
+        json_data = req_data.model_dump_json(exclude_unset=True, exclude_none=True)
         try:
             resp = make_request(
                 self.session,
@@ -67,7 +67,7 @@ class EventAPIClient:
                 headers={"Content-Type": "application/json"},
                 timeout=timeout,
             )
-            return SuccessSummary.parse_obj(resp.json())
+            return SuccessSummary.model_validate_json(resp.content)
         except requests.HTTPError as exc:
             raise wrap_exception(exc)
 

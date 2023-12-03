@@ -1,5 +1,4 @@
 """API requests and responses for the event endpoint."""
-from datetime import datetime
 from typing import List, Optional, Dict
 
 from pydantic import (
@@ -8,9 +7,9 @@ from pydantic import (
     PositiveInt,
 )
 
-from .base import Event
-from .options import EventAPIOptions
-from ....common.models import BaseAPIError
+from amplitude_python_sdk.v2.models.event.base import Event
+from amplitude_python_sdk.v2.models.event.options import EventAPIOptions
+from amplitude_python_sdk.common.models import BaseAPIError
 
 
 class UploadRequestBody(BaseModel):
@@ -22,12 +21,6 @@ class UploadRequestBody(BaseModel):
     api_key: str
     events: List[Event]
     options: Optional[EventAPIOptions] = None
-
-    class Config:
-        json_encoders = {
-            # Amplitude requires timestamps in millis, not seconds
-            datetime: lambda v: int(v.timestamp() * 1000),
-        }
 
 
 class SuccessSummary(BaseModel):

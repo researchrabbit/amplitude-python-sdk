@@ -11,19 +11,19 @@ from ..models.event import (
 class InvalidRequestException(AmplitudeAPIException):
     @classmethod
     def from_response(cls, response: requests.Response):
-        e = InvalidRequestError.parse_obj(response.json())
+        e = InvalidRequestError.model_validate_json(response.content)
         return cls(e)
 
 
 class PayloadTooLargeException(AmplitudeAPIException):
     @classmethod
     def from_response(cls, response: requests.Response):
-        e = PayloadTooLargeError.parse_obj(response.json())
+        e = PayloadTooLargeError.model_validate_json(response.content)
         return cls(e)
 
 
 class TooManyRequestsForDeviceException(AmplitudeAPIException):
     @classmethod
     def from_response(cls, response: requests.Response):
-        e = TooManyRequestsForDeviceError.parse_obj(response.json())
+        e = TooManyRequestsForDeviceError.model_validate_json(response.content)
         return cls(e)

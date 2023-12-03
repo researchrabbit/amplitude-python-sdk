@@ -3,11 +3,14 @@ Models used to interact with the Amplitude Releases API:
 <https://developers.amplitude.com/docs/releases-api>
 """
 
-import json
 from datetime import datetime
 from typing import Union, Optional, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
+
+
+class ReleaseParams(BaseModel):
+    created_by: Optional[str] = None
 
 
 class Release(BaseModel):
@@ -24,22 +27,18 @@ class Release(BaseModel):
     title: str
     description: Optional[str] = None
     platforms: Optional[List[str]] = None
-    created_by: Optional[str] = None
+    params: Optional[ReleaseParams] = None
     chart_visibility: bool = True
 
-    def dict(self, *args, **kwargs):
-        base_dict = super().dict(*args, **kwargs)
-        if self.created_by:
-            # Delete created_by top-level key and nest it under params object instead.
-            base_dict.pop("created_by", None)
-            base_dict["params"] = json.dumps({"created_by": self.created_by})
-        return base_dict
+    @field_serializer("release_start", "release_end")
+    def format_datetime(self, v: Optional[datetime]) -> Optional[str]:
+        """
+        The Releases API requires the dates to be passed in exactly this string format.
+        """
+        if v is None:
+            return None
 
-    class Config:
-        json_encoders = {
-            # The Releases API requires the dates to be passed in exactly this string format.
-            datetime: lambda v: v.strftime("%Y-%m-%d %H:%M:%S"),
-        }
+        return v.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class ReleaseResponseMetadata(BaseModel):
