@@ -57,7 +57,6 @@ def test_create_success(
     create_release_response: CreateReleaseResponse,
     releases_client: ReleasesAPIClient,
 ):
-    print(create_release_response.model_dump())
     requests_mock.post(
         releases_client.releases_api_endpoint + routes.RELEASES_API,
         json=create_release_response.model_dump(),

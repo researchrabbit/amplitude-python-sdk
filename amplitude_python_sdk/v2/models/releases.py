@@ -3,11 +3,14 @@ Models used to interact with the Amplitude Releases API:
 <https://developers.amplitude.com/docs/releases-api>
 """
 
-import json
 from datetime import datetime
 from typing import Union, Optional, List
 
-from pydantic import BaseModel, field_serializer, model_serializer
+from pydantic import BaseModel, field_serializer
+
+
+class ReleaseParams(BaseModel):
+    created_by: Optional[str] = None
 
 
 class Release(BaseModel):
@@ -24,31 +27,8 @@ class Release(BaseModel):
     title: str
     description: Optional[str] = None
     platforms: Optional[List[str]] = None
-    created_by: Optional[str] = None
+    params: Optional[ReleaseParams] = None
     chart_visibility: bool = True
-
-    @model_serializer
-    def serialize_release(self) -> dict:
-        """
-        Serialize the Release model into a dictionary.
-        """
-        base_dict = {
-            "version": self.version,
-            "release_start": self.format_datetime(self.release_start),
-            "release_end": self.format_datetime(self.release_end),
-            "title": self.title,
-            "description": self.description,
-            "platforms": self.platforms,
-            "chart_visibility": self.chart_visibility,
-            "created_by": self.created_by,
-        }
-        if self.created_by:
-            # Delete created_by top-level key and nest it under params object instead.
-            base_dict.pop("created_by", None)
-            base_dict["params"] = json.dumps({"created_by": self.created_by})
-
-        # Filter out any null values.
-        return {k: v for k, v in base_dict.items() if v is not None}
 
     @field_serializer("release_start", "release_end")
     def format_datetime(self, v: Optional[datetime]) -> Optional[str]:
