@@ -35,8 +35,8 @@ def releases_client() -> ReleasesAPIClient:
 def release_response() -> ReleaseResponse:
     return ReleaseResponse(
         version="x.y.z",
-        release_start=datetime.now(),
-        release_end=datetime.now() + timedelta(days=30),
+        release_start=datetime.now().replace(microsecond=0),
+        release_end=(datetime.now() + timedelta(days=30)).replace(microsecond=0),
         title="test release",
         type="integration",
         org_id=21,
